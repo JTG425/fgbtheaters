@@ -61,9 +61,9 @@ function DropDown(props) {
     setShowDropdown(!showDropdown);
   };
 
-  useEffect(() => {
-    toggleDropdown();
-  }, []);
+  // useEffect(() => {
+  //   toggleDropdown();
+  // }, []);
 
   return (
     <>

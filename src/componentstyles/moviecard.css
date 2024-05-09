@@ -1,0 +1,101 @@
+.movieCard {
+    border: none;
+    width: 90vw;
+    max-width: 100%;
+    height: fit-content;
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.film-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.film-header h3 {
+    margin: 0;
+}
+
+.film-header p {
+    margin-bottom: 2rem;
+    font-size: 0.8rem;
+    color: var(--text);
+}
+
+.showtime a {
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    border: none;
+}
+
+.showtime-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.showtime-button {
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--copy);
+    font-size: 1rem;
+
+}
+
+.film {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+
+.poster {
+    width: 200px;
+    height: auto;
+}
+
+.poster-loading {
+    width: 200px;
+    height: 300px;
+    background-color: var(--foreground);
+}
+
+@media screen and (max-width: 600px) {
+    .movieCard {
+        width: 85vw;
+    }
+
+    .film {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .poster {
+        width: 100%;
+        height: auto;
+    }
+
+    .showtime-button {
+        width: 50vw;
+        font-size: 2rem;
+    }
+}

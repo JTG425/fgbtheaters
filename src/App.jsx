@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import NavBar from "./components/navbar";
@@ -11,6 +11,11 @@ import Admin from "./pages/admin";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("Home");
+  const [capitolShows, setCapitolShows] = useState([]);
+  const [paramountShows, setParamountShows] = useState([]);
+  const [rtsCodes, setRtsCodes] = useState([]);
+  const [dataReceived, setDataReceived] = useState(false);
+
   const pages = [
     {
       name: "Home",
@@ -36,6 +41,137 @@ function App() {
 
   const handlePageChange = (page) => setCurrentPage(page);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchCapitolShows();
+      await fetchParamountShows();
+      setDataReceived(true);
+    };
+
+    const fetchCapitolShows = async () => {
+      try {
+        const response = await fetch(
+          `https://8qgqyq3ke0.execute-api.us-east-1.amazonaws.com/default/send-xml`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ theater: "Capitol" }),
+          }
+        );
+        const capXML = await response.text();
+        const parser = new DOMParser();
+        const capDoc = parser.parseFromString(capXML, "application/xml");
+
+        const capFilmTitleElements = capDoc.getElementsByTagName("filmtitle");
+
+        let allRtsCodes = [];
+
+        const extractedCapShows = Array.from(capFilmTitleElements).map(
+          (capFilmTitleElement) => {
+            const name = capFilmTitleElement.querySelector("name").textContent;
+            const rating =
+              capFilmTitleElement.querySelector("rating").textContent;
+            const length =
+              capFilmTitleElement.querySelector("length").textContent;
+            const website =
+              capFilmTitleElement.querySelector("website").textContent;
+            const rtsCode =
+              capFilmTitleElement.querySelector("RtsCode").textContent;
+            allRtsCodes.push(rtsCode);
+
+            const capShowElements =
+              capFilmTitleElement.getElementsByTagName("show");
+            const extractedCapShows = Array.from(capShowElements).map(
+              (capShowElement) => {
+                const date = capShowElement.querySelector("date").textContent;
+                const time = capShowElement.querySelector("time").textContent;
+                const saleLink =
+                  capShowElement.querySelector("salelink").textContent;
+                return { date, time, saleLink };
+              }
+            );
+            return {
+              name,
+              rating,
+              length,
+              website,
+              rtsCode,
+              capitolShows: extractedCapShows,
+            };
+          }
+        );
+        setCapitolShows(extractedCapShows);
+        setRtsCodes([...new Set(allRtsCodes)]);
+      } catch (error) {
+        console.error("Error fetching Capitol shows:", error);
+      }
+    };
+
+    const fetchParamountShows = async () => {
+      try {
+        const response = await fetch(
+          `https://8qgqyq3ke0.execute-api.us-east-1.amazonaws.com/default/send-xml`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ theater: "Paramount" }),
+          }
+        );
+        const parXML = await response.text();
+        const parser = new DOMParser();
+        const parDoc = parser.parseFromString(parXML, "application/xml");
+
+        const parFilmTitleElements = parDoc.getElementsByTagName("filmtitle");
+
+        let allRtsCodes = [];
+
+        const extractedParShows = Array.from(parFilmTitleElements).map(
+          (parFilmTitleElement) => {
+            const name = parFilmTitleElement.querySelector("name").textContent;
+            const rating =
+              parFilmTitleElement.querySelector("rating").textContent;
+            const length =
+              parFilmTitleElement.querySelector("length").textContent;
+            const website =
+              parFilmTitleElement.querySelector("website").textContent;
+            const rtsCode =
+              parFilmTitleElement.querySelector("RtsCode").textContent;
+            allRtsCodes.push(rtsCode);
+
+            const parShowElements =
+              parFilmTitleElement.getElementsByTagName("show");
+            const extractedParShows = Array.from(parShowElements).map(
+              (parShowElement) => {
+                const date = parShowElement.querySelector("date").textContent;
+                const time = parShowElement.querySelector("time").textContent;
+                const saleLink =
+                  parShowElement.querySelector("salelink").textContent;
+                return { date, time, saleLink };
+              }
+            );
+            return {
+              name,
+              rating,
+              length,
+              website,
+              rtsCode,
+              paramountShows: extractedParShows,
+            };
+          }
+        );
+        setParamountShows(extractedParShows);
+        setRtsCodes([...new Set(allRtsCodes)]);
+      } catch (error) {
+        console.error("Error fetching Paramount shows:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -55,7 +191,11 @@ function App() {
                 path="/"
                 element={
                   <PageWrapper>
-                    <Home />
+                    <Home
+                      dataReceived={dataReceived}
+                      capShows={capitolShows}
+                      parShows={paramountShows}
+                    />
                   </PageWrapper>
                 }
               />
