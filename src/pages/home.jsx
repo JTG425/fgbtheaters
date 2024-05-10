@@ -20,6 +20,8 @@ function Home(props) {
   const parShows = props.parShows;
   const [filteredCapShows, setFilteredCapShows] = useState([]);
   const [filteredParShows, setFilteredParShows] = useState([]);
+  const capPosters = props.capPosters;
+  const parPosters = props.parPosters;
 
   const dataReceived = props.dataReceived;
   const [startDate, setStartDate] = useState(new Date());
@@ -46,12 +48,16 @@ function Home(props) {
             date={formattedDate}
             shows={capShows}
             dataReceived={dataReceived}
+            capPosters={capPosters}
+            parPosters={parPosters}
           />
         ) : (
           <MovieCard
             date={formattedDate}
             shows={parShows}
             dataReceived={dataReceived}
+            capPosters={capPosters}
+            parPosters={parPosters}
           />
         )}
       </div>

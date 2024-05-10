@@ -18,6 +18,12 @@ function App() {
   const [rtsCodes, setRtsCodes] = useState([]);
   const [dataReceived, setDataReceived] = useState(false);
 
+  const [capParsed, setCapParsed] = useState(false);
+  const [parParsed, setParParsed] = useState(false);
+
+  const [capPosters, setCapPosters] = useState([]);
+  const [parPosters, setParPosters] = useState([]);
+
   const [posters, setPosters] = useState([]);
 
   const pages = [
@@ -69,52 +75,58 @@ function App() {
           }
         );
         const capXML = await response.text();
-        const parser = new DOMParser();
-        const capDoc = parser.parseFromString(capXML, "application/xml");
-
-        const capFilmTitleElements = capDoc.getElementsByTagName("filmtitle");
-
-        let allRtsCodes = [];
-
-        const extractedCapShows = Array.from(capFilmTitleElements).map(
-          (capFilmTitleElement) => {
-            const name = capFilmTitleElement.querySelector("name").textContent;
-            const rating =
-              capFilmTitleElement.querySelector("rating").textContent;
-            const length =
-              capFilmTitleElement.querySelector("length").textContent;
-            const website =
-              capFilmTitleElement.querySelector("website").textContent;
-            const rtsCode =
-              capFilmTitleElement.querySelector("RtsCode").textContent;
-            allRtsCodes.push(rtsCode);
-
-            const capShowElements =
-              capFilmTitleElement.getElementsByTagName("show");
-            const extractedCapShows = Array.from(capShowElements).map(
-              (capShowElement) => {
-                const date = capShowElement.querySelector("date").textContent;
-                const time = capShowElement.querySelector("time").textContent;
-                const saleLink =
-                  capShowElement.querySelector("salelink").textContent;
-                return { date, time, saleLink };
-              }
-            );
-            return {
-              name,
-              rating,
-              length,
-              website,
-              rtsCode,
-              shows: extractedCapShows,
-            };
-          }
-        );
-        setCapitolShows(extractedCapShows);
-        setCapRtsCodes([...new Set(allRtsCodes)]);
+        parseCapXML(capXML);
       } catch (error) {
         console.error("Error fetching Capitol shows:", error);
       }
+    };
+
+    const parseCapXML = async (capXML) => {
+      const parser = new DOMParser();
+      const capDoc = parser.parseFromString(capXML, "application/xml");
+
+      const capFilmTitleElements = capDoc.getElementsByTagName("filmtitle");
+
+      let allRtsCodes = [];
+
+      const extractedCapShows = Array.from(capFilmTitleElements).map(
+        (capFilmTitleElement) => {
+          const name = capFilmTitleElement.querySelector("name").textContent;
+          const rating =
+            capFilmTitleElement.querySelector("rating").textContent;
+          const length =
+            capFilmTitleElement.querySelector("length").textContent;
+          const website =
+            capFilmTitleElement.querySelector("website").textContent;
+          const rtsCode =
+            capFilmTitleElement.querySelector("RtsCode").textContent;
+          allRtsCodes.push(rtsCode);
+
+          const capShowElements =
+            capFilmTitleElement.getElementsByTagName("show");
+          const extractedCapShows = Array.from(capShowElements).map(
+            (capShowElement) => {
+              const date = capShowElement.querySelector("date").textContent;
+              const time = capShowElement.querySelector("time").textContent;
+              const saleLink =
+                capShowElement.querySelector("salelink").textContent;
+              return { date, time, saleLink };
+            }
+          );
+          return {
+            name,
+            rating,
+            length,
+            website,
+            rtsCode,
+            shows: extractedCapShows,
+          };
+        }
+      );
+      setCapitolShows(extractedCapShows);
+      setCapRtsCodes([...new Set(allRtsCodes)]);
+      setCapParsed(true);
+      fetchCapPosters(allRtsCodes);
     };
 
     const fetchParamountShows = async () => {
@@ -130,94 +142,104 @@ function App() {
           }
         );
         const parXML = await response.text();
-        const parser = new DOMParser();
-        const parDoc = parser.parseFromString(parXML, "application/xml");
-
-        const parFilmTitleElements = parDoc.getElementsByTagName("filmtitle");
-
-        let allRtsCodes = [];
-
-        const extractedParShows = Array.from(parFilmTitleElements).map(
-          (parFilmTitleElement) => {
-            const name = parFilmTitleElement.querySelector("name").textContent;
-            const rating =
-              parFilmTitleElement.querySelector("rating").textContent;
-            const length =
-              parFilmTitleElement.querySelector("length").textContent;
-            const website =
-              parFilmTitleElement.querySelector("website").textContent;
-            const rtsCode =
-              parFilmTitleElement.querySelector("RtsCode").textContent;
-            allRtsCodes.push(rtsCode);
-
-            const parShowElements =
-              parFilmTitleElement.getElementsByTagName("show");
-            const extractedParShows = Array.from(parShowElements).map(
-              (parShowElement) => {
-                const date = parShowElement.querySelector("date").textContent;
-                const time = parShowElement.querySelector("time").textContent;
-                const saleLink =
-                  parShowElement.querySelector("salelink").textContent;
-                return { date, time, saleLink };
-              }
-            );
-            return {
-              name,
-              rating,
-              length,
-              website,
-              rtsCode,
-              shows: extractedParShows,
-            };
-          }
-        );
-        setParamountShows(extractedParShows);
-        setParRtsCodes([...new Set(allRtsCodes)]);
+        parseParXML(parXML);
       } catch (error) {
         console.error("Error fetching Paramount shows:", error);
       }
     };
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    const fetchPosters = async () => {
-      const fetchedPosters = await Promise.all(
-        rtsCodes.map(async (code) => {
-          try {
-            const response = await fetch(
-              `https://1shn6ru7ic.execute-api.us-east-1.amazonaws.com/default/send-posters`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ code }),
-              }
-            );
+    const parseParXML = async (parXML) => {
+      const parser = new DOMParser();
+      const parDoc = parser.parseFromString(parXML, "application/xml");
 
-            const json = await response.json();
-            const base64Image = json.base64Image;
-            setPosters([...posters, { rtsCode: code, base64Image }]);
-            return { rtsCode: code, base64Image };
-          } catch (error) {
-            console.error("Error fetching poster for RTS code:", code, error);
-            return { rtsCode: code, base64Image: "" }; // return with empty image in case of error
-          }
-        })
+      const parFilmTitleElements = parDoc.getElementsByTagName("filmtitle");
+
+      let allRtsCodes = [];
+
+      const extractedParShows = Array.from(parFilmTitleElements).map(
+        (parFilmTitleElement) => {
+          const name = parFilmTitleElement.querySelector("name").textContent;
+          const rating =
+            parFilmTitleElement.querySelector("rating").textContent;
+          const length =
+            parFilmTitleElement.querySelector("length").textContent;
+          const website =
+            parFilmTitleElement.querySelector("website").textContent;
+          const rtsCode =
+            parFilmTitleElement.querySelector("RtsCode").textContent;
+          allRtsCodes.push(rtsCode);
+
+          const parShowElements =
+            parFilmTitleElement.getElementsByTagName("show");
+          const extractedParShows = Array.from(parShowElements).map(
+            (parShowElement) => {
+              const date = parShowElement.querySelector("date").textContent;
+              const time = parShowElement.querySelector("time").textContent;
+              const saleLink =
+                parShowElement.querySelector("salelink").textContent;
+              return { date, time, saleLink };
+            }
+          );
+          return {
+            name,
+            rating,
+            length,
+            website,
+            rtsCode,
+            shows: extractedParShows,
+          };
+        }
       );
-      setPosters(fetchedPosters);
+      setParamountShows(extractedParShows);
+      setParRtsCodes([...new Set(allRtsCodes)]);
+      setParParsed(true);
+      fetchParPosters(allRtsCodes);
     };
 
-    if (rtsCodes.length > 0 && dataReceived) {
-      fetchPosters();
-    }
-  }, [rtsCodes, dataReceived]);
+    const fetchCapPosters = async (rcodes) => {
+      try {
+        const response = await fetch(
+          `https://1shn6ru7ic.execute-api.us-east-1.amazonaws.com/default/send-posters`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ codes: rcodes }),
+          }
+        );
+        const json = await response.json();
+        if (json && json.images) {
+          setCapPosters(json.images);
+        } else {
+          console.error("Received invalid or empty images array:", json);
+        }
+      } catch (error) {
+        console.error("Error fetching posters for chunk:", chunk, error);
+      }
+    };
 
-  useEffect(() => {
-    setRtsCodes([...new Set([...capRtsCodes, ...parRtsCodes])]);
-    console.log(posters);
-  }, [capRtsCodes, parRtsCodes]);
+    const fetchParPosters = async (rcodes) => {
+      try {
+        const response = await fetch(
+          `https://1shn6ru7ic.execute-api.us-east-1.amazonaws.com/default/send-posters`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ codes: rcodes }),
+          }
+        );
+        const json = await response.json();
+        setParPosters(json.images);
+      } catch (error) {
+        console.error("Error fetching posters:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="App">
@@ -235,6 +257,7 @@ function App() {
           >
             <Routes location={location} key={location.pathname}>
               <Route
+                key="home"
                 path="/"
                 element={
                   <PageWrapper>
@@ -242,6 +265,8 @@ function App() {
                       dataReceived={dataReceived}
                       capShows={capitolShows}
                       parShows={paramountShows}
+                      capPosters={capPosters}
+                      parPosters={parPosters}
                     />
                   </PageWrapper>
                 }

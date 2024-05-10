@@ -16,39 +16,23 @@ const variants = {
 };
 
 const MoviePoster = (props) => {
-  const [poster, setPoster] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [recieved, setRecieved] = useState(false);
-  const [error, setError] = useState(false);
   const film = props.film;
   const rtsCode = film.rtsCode;
+  const capPosters = props.capPosters;
+  const parPosters = props.parPosters;
+  const [poster, setPoster] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    const getPoster = async () => {
-      try {
-        const response = await fetch(
-          `https://1shn6ru7ic.execute-api.us-east-1.amazonaws.com/default/send-posters`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ rtsCode }),
-          }
-        );
-
-        const json = await response.json();
-        setPoster(json.base64Image);
-        setRecieved(true);
-        setError(false);
-      } catch (error) {
+    if (capPosters != null) {
+      const poster = capPosters.find((poster) => poster.rtsCode === rtsCode);
+      if (poster != null) {
+        setPoster(poster.base64Image);
+      } else {
         setError(true);
-        console.error("Error importing Poster Images:", error);
       }
-    };
-    setRecieved(false);
-    getPoster();
-  }, [rtsCode]);
+    }
+  }, [capPosters, rtsCode]);
 
   return (
     <div className="poster">

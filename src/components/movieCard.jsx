@@ -18,6 +18,8 @@ function MovieCard(props) {
   const date = props.date;
   const shows = props.shows;
   const recieved = props.dataReceived;
+  const capPosters = props.capPosters;
+  const parPosters = props.parPosters;
 
   return (
     <motion.div className="movieCard">
@@ -27,7 +29,11 @@ function MovieCard(props) {
             (film, filmIndex) =>
               film.shows.filter((show) => show.date === date).length > 0 && (
                 <motion.div className="film" key={filmIndex}>
-                  <MoviePoster film={film} />
+                  <MoviePoster
+                    film={film}
+                    capPosters={capPosters}
+                    parPosters={parPosters}
+                  />
                   <div className="film-header">
                     <h3>{film.name}</h3>
                     <p>{film.rating}</p>
