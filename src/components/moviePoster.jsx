@@ -1,3 +1,4 @@
+import "../componentstyles/moviecard.css";
 import React, { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 

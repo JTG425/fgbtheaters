@@ -27,6 +27,10 @@
   --border-radius: 0.375rem;
 }
 
+body {
+  background: var(--background);
+}
+
 a {
   text-decoration: none;
   color: var(--copy);
@@ -41,6 +45,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  background: var(--background);
 }
 
 
@@ -52,9 +57,6 @@ a {
   width: 80vw;
   max-width: 1500px;
   height: fit-content;
-  border: 1px solid var(--border);
-  background: var(--foreground);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem 2rem;
+  background: var(--background);
   margin-top: 75px;
 }

@@ -23,37 +23,37 @@ function MovieCard(props) {
     <motion.div className="movieCard">
       {recieved ? (
         <AnimatePresence>
-          {shows.map((show, index) => {
-            return (
-              <motion.div
-                key={index}
-                className="show"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <MoviePoster film={show} />
-                <div className="show-info">
-                  <h3>{show.name}</h3>
-                  <p>{show.rating}</p>
-                  <p>{show.length}</p>
-                  <a href={show.website}>Website</a>
-                </div>
-                <div className="showtimes">
-                  <h4>Showtimes</h4>
-                  {show.capitolShows.map((capitolShow, index) => {
-                    return (
-                      <div key={index} className="showtime">
-                        <p>{capitolShow.date}</p>
-                        <p>{convertToStandardTime(capitolShow.time)}</p>
-                        <a href={capitolShow.saleLink}>Tickets</a>
-                      </div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            );
-          })}
+          {shows.map(
+            (film, filmIndex) =>
+              film.shows.filter((show) => show.date === date).length > 0 && (
+                <motion.div className="film" key={filmIndex}>
+                  <MoviePoster film={film} />
+                  <div className="film-header">
+                    <h3>{film.name}</h3>
+                    <p>{film.rating}</p>
+                    {film.shows
+                      .filter((show) => show.date === date)
+                      .map((show, showIndex) => (
+                        <div className="showtime" key={showIndex}>
+                          <a
+                            className="showtime-link"
+                            href={show.saleLink}
+                            target="_blank"
+                          >
+                            <motion.button
+                              className="showtime-button"
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
+                            >
+                              {convertToStandardTime(show.time)}
+                            </motion.button>
+                          </a>
+                        </div>
+                      ))}
+                  </div>
+                </motion.div>
+              )
+          )}
         </AnimatePresence>
       ) : (
         <div className="loading">Loading...</div>

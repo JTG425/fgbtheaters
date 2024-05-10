@@ -13,8 +13,12 @@ function App() {
   const [currentPage, setCurrentPage] = useState("Home");
   const [capitolShows, setCapitolShows] = useState([]);
   const [paramountShows, setParamountShows] = useState([]);
+  const [capRtsCodes, setCapRtsCodes] = useState([]);
+  const [parRtsCodes, setParRtsCodes] = useState([]);
   const [rtsCodes, setRtsCodes] = useState([]);
   const [dataReceived, setDataReceived] = useState(false);
+
+  const [posters, setPosters] = useState([]);
 
   const pages = [
     {
@@ -43,9 +47,13 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchCapitolShows();
-      await fetchParamountShows();
-      setDataReceived(true);
+      try {
+        await Promise.all([fetchCapitolShows(), fetchParamountShows()]);
+        setDataReceived(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setDataReceived(false);
+      }
     };
 
     const fetchCapitolShows = async () => {
@@ -98,12 +106,12 @@ function App() {
               length,
               website,
               rtsCode,
-              capitolShows: extractedCapShows,
+              shows: extractedCapShows,
             };
           }
         );
         setCapitolShows(extractedCapShows);
-        setRtsCodes([...new Set(allRtsCodes)]);
+        setCapRtsCodes([...new Set(allRtsCodes)]);
       } catch (error) {
         console.error("Error fetching Capitol shows:", error);
       }
@@ -159,18 +167,57 @@ function App() {
               length,
               website,
               rtsCode,
-              paramountShows: extractedParShows,
+              shows: extractedParShows,
             };
           }
         );
         setParamountShows(extractedParShows);
-        setRtsCodes([...new Set(allRtsCodes)]);
+        setParRtsCodes([...new Set(allRtsCodes)]);
       } catch (error) {
         console.error("Error fetching Paramount shows:", error);
       }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchPosters = async () => {
+      const fetchedPosters = await Promise.all(
+        rtsCodes.map(async (code) => {
+          try {
+            const response = await fetch(
+              `https://1shn6ru7ic.execute-api.us-east-1.amazonaws.com/default/send-posters`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ code }),
+              }
+            );
+
+            const json = await response.json();
+            const base64Image = json.base64Image;
+            setPosters([...posters, { rtsCode: code, base64Image }]);
+            return { rtsCode: code, base64Image };
+          } catch (error) {
+            console.error("Error fetching poster for RTS code:", code, error);
+            return { rtsCode: code, base64Image: "" }; // return with empty image in case of error
+          }
+        })
+      );
+      setPosters(fetchedPosters);
+    };
+
+    if (rtsCodes.length > 0 && dataReceived) {
+      fetchPosters();
+    }
+  }, [rtsCodes, dataReceived]);
+
+  useEffect(() => {
+    setRtsCodes([...new Set([...capRtsCodes, ...parRtsCodes])]);
+    console.log(posters);
+  }, [capRtsCodes, parRtsCodes]);
 
   return (
     <div className="App">

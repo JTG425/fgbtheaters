@@ -3,6 +3,8 @@ import { BrowserRouter, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "../componentstyles/navbar.css";
 import DropDown from "./dropdown";
+import fullNavLogo from "../assets/fullNav.svg";
+import smallNavLogo from "../assets/smallNav.svg";
 
 function NavBar(props) {
   const pages = props.pages;
@@ -27,7 +29,21 @@ function NavBar(props) {
 
   return (
     <div className="nav-container">
-      <div className="nav-logo">Logo</div>
+      <motion.img
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.98 }}
+        src={fullNavLogo}
+        alt="nav-logo"
+        className="full-nav-logo"
+      />
+
+      <motion.img
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.98 }}
+        src={smallNavLogo}
+        alt="nav-logo"
+        className="small-nav-logo"
+      />
 
       <DropDown />
       <div className="nav-buttons-container">
