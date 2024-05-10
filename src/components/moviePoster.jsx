@@ -24,13 +24,9 @@ const MoviePoster = (props) => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (capPosters != null) {
-      const poster = capPosters.find((poster) => poster.rtsCode === rtsCode);
-      if (poster != null) {
-        setPoster(poster.base64Image);
-      } else {
-        setError(true);
-      }
+    const poster = capPosters.find((poster) => poster.rtsCode === rtsCode);
+    if (poster != null) {
+      setPoster(poster.imageUrl);
     }
   }, [capPosters, rtsCode]);
 
@@ -39,7 +35,7 @@ const MoviePoster = (props) => {
       {poster != null ? (
         <motion.img
           className="poster"
-          src={`data:image/jpg;base64,${poster}`}
+          src={poster}
           alt={rtsCode}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

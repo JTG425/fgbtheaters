@@ -3,7 +3,9 @@ import "../pagestyles/home.css";
 import SlideShow from "../components/slideshow";
 import MovieCard from "../components/movieCard";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import "../componentstyles/datepicker.css";
+import { CiCalendarDate } from "react-icons/ci";
+import { motion } from "framer-motion";
 
 const handleDateFormating = (date) => {
   const year = date.getFullYear();
@@ -22,6 +24,7 @@ function Home(props) {
   const [filteredParShows, setFilteredParShows] = useState([]);
   const capPosters = props.capPosters;
   const parPosters = props.parPosters;
+  const bannerPosters = props.bannerPosters;
 
   const dataReceived = props.dataReceived;
   const [startDate, setStartDate] = useState(new Date());
@@ -33,15 +36,22 @@ function Home(props) {
 
   return (
     <div className="page-container">
-      <SlideShow />
-      <DatePicker
-        className="datePicker"
-        selected={startDate}
-        onChange={(date) => {
-          setStartDate(date);
-          setFormattedDate(handleDateFormating(date));
-        }}
-      />
+      <SlideShow bannerPosters={bannerPosters} />
+      <motion.div
+        className="datePickerContainer"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <CiCalendarDate />
+        <DatePicker
+          className="datePicker"
+          selected={startDate}
+          onChange={(date) => {
+            setStartDate(date);
+            setFormattedDate(handleDateFormating(date));
+          }}
+        />
+      </motion.div>
       <div className="movies-container">
         {dataReceived && selectedTheater === "Capitol" ? (
           <MovieCard

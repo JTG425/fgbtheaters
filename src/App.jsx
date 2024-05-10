@@ -25,6 +25,7 @@ function App() {
   const [parPosters, setParPosters] = useState([]);
 
   const [posters, setPosters] = useState([]);
+  const [bannerPosters, setBannerPosters] = useState([]);
 
   const pages = [
     {
@@ -211,6 +212,7 @@ function App() {
         const json = await response.json();
         if (json && json.images) {
           setCapPosters(json.images);
+          fetchSlideshowPosters(rcodes);
         } else {
           console.error("Received invalid or empty images array:", json);
         }
@@ -238,6 +240,28 @@ function App() {
       }
     };
 
+    const fetchSlideshowPosters = async (rcodes) => {
+      try {
+        const response = await fetch(
+          `https://v9m5j4di57.execute-api.us-east-1.amazonaws.com/default/send-banner-images`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ codes: rcodes }),
+          }
+        );
+        const json = await response.json();
+        if (json && json.images) {
+          setBannerPosters(json.images);
+        } else {
+          console.error("Received invalid or empty images array:", json);
+        }
+      } catch (error) {
+        console.error("Error fetching posters for chunk:", chunk, error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -265,6 +289,7 @@ function App() {
                       dataReceived={dataReceived}
                       capShows={capitolShows}
                       parShows={paramountShows}
+                      bannerPosters={bannerPosters}
                       capPosters={capPosters}
                       parPosters={parPosters}
                     />
