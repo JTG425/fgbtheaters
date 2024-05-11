@@ -1,7 +1,8 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import loading from "./assets/loading.svg";
 import NavBar from "./components/navbar";
 import Home from "./pages/home";
 import Tickets from "./pages/tickets";
@@ -17,6 +18,7 @@ function App() {
   const [parRtsCodes, setParRtsCodes] = useState([]);
   const [rtsCodes, setRtsCodes] = useState([]);
   const [dataReceived, setDataReceived] = useState(false);
+  const [loadScreen, setLoadScreen] = useState(true);
 
   const [capParsed, setCapParsed] = useState(false);
   const [parParsed, setParParsed] = useState(false);
@@ -26,6 +28,22 @@ function App() {
 
   const [posters, setPosters] = useState([]);
   const [bannerPosters, setBannerPosters] = useState([]);
+
+  const fadeRef = useRef();
+  const loadVariants = {
+    loadScreen: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+      },
+    },
+    loadScreenOut: {
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
   const pages = [
     {
@@ -265,9 +283,30 @@ function App() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (dataReceived) {
+      setTimeout(() => {
+        setLoadScreen(false);
+        setTimeout(() => {
+          fadeRef.current.style.display = "none";
+        }, 1000);
+      }, 1000);
+    }
+  }, [dataReceived]);
+
   return (
     <div className="App">
       <BrowserRouter>
+        <motion.div
+          className="Loading"
+          initial="loadScreen"
+          ref={fadeRef}
+          animate={loadScreen ? "loadScreen" : "loadScreenOut"}
+          variants={loadVariants}
+        >
+          <img src={loading} alt="loading" className="loading-svg" />
+          <h1>FGB Theaters</h1>
+        </motion.div>
         <NavBar
           pages={pages}
           handlePageChange={handlePageChange}

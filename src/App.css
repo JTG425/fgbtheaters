@@ -37,6 +37,34 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+.Loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: var(--background);
+  scroll-behavior: none;
+}
+
+button,
+input,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 
 .App {
   margin: 0;
@@ -46,6 +74,13 @@ a {
   align-items: center;
   justify-content: flex-start;
   background: var(--background);
+  overflow-x: hidden;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.App::-webkit-scrollbar {
+  display: none;
 }
 
 
@@ -59,4 +94,26 @@ a {
   height: fit-content;
   background: var(--background);
   margin-top: 75px;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.page-container::-webkit-scrollbar {
+  display: none;
+}
+
+.loading-svg {
+  height: 100px;
+  width: 100px;
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

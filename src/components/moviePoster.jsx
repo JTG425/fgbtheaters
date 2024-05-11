@@ -42,8 +42,7 @@ const MoviePoster = (props) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
           whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsOpen(!isOpen)}
+          whileTap={{ scale: 0.98 }}
         />
       ) : error ? (
         <motion.div className="not-found">

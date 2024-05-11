@@ -32,6 +32,7 @@
 
 .film-header h3 {
     margin: 0;
+    font-size: 1.5vw;
 }
 
 .film-header p {
@@ -77,7 +78,7 @@
     border-radius: 0.375rem;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     background: var(--foreground);
-    max-width: 1400px;
+    max-width: 1500px;
     width: 100%;
 }
 
@@ -85,6 +86,7 @@
 .poster {
     width: 200px;
     height: auto;
+    cursor: pointer;
 }
 
 .poster-loading {
@@ -97,9 +99,14 @@
 
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
     .movieCard {
-        width: 85vw;
+        width: 80vw;
+    }
+
+    .film-header h3 {
+        margin-top: 10px;
+        font-size: 3vw;
     }
 
     .film {
@@ -116,6 +123,9 @@
 
     .showtime-button {
         width: 50vw;
-        font-size: 2rem;
+        font-size: 1rem;
+        background: var(--secondary);
+        color: var(--foreground);
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
     }
 }

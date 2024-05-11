@@ -11,14 +11,15 @@ import { FaMapLocation } from "react-icons/fa6";
 import { FaRegCircleQuestion } from "react-icons/fa6";
 
 function DropDown(props) {
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(true);
 
   const toggleDropdown = () => {
     switch (showDropdown) {
       case true:
         anime({
           targets: ".dropdown",
-          translateY: [-800, 0],
+          translateY: [-800, 860],
+          opacity: [0, 1],
           easing: "easeOutExpo",
           duration: 900,
           delay: anime.stagger(100),
@@ -28,7 +29,7 @@ function DropDown(props) {
         anime({
           targets: ".dropdown-button",
           translateY: [-800, 0],
-          opacity: 1,
+          opacity: [0, 1],
           easing: "easeOutExpo",
           duration: 900,
           delay: anime.stagger(100, { from: "last" }),
@@ -39,9 +40,10 @@ function DropDown(props) {
       case false:
         anime({
           targets: ".dropdown",
-          translateY: [0, -800],
+          translateY: [860, -800],
+          opacity: [1, 0],
           easing: "easeOutExpo",
-          delay: 550,
+          delay: 200,
           duration: 900,
           loop: false,
         });
@@ -49,10 +51,17 @@ function DropDown(props) {
         anime({
           targets: ".dropdown-button",
           translateY: [0, -800],
-          opacity: 1,
           easing: "easeOutExpo",
           duration: 900,
           delay: anime.stagger(100, { from: "first" }),
+          loop: false,
+        });
+
+        anime({
+          targets: ".dropdown-button",
+          opacity: [1, 0],
+          easing: "easeOutExpo",
+          duration: 300,
           loop: false,
         });
 

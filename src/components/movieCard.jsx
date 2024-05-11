@@ -48,8 +48,8 @@ function MovieCard(props) {
                           >
                             <motion.button
                               className="showtime-button"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
                             >
                               {convertToStandardTime(show.time)}
                             </motion.button>
