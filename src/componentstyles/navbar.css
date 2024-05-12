@@ -118,6 +118,14 @@
 
     .show-dropdown-button {
         display: flex;
+        color: var(--copy);
+        margin-left: 0;
+        right: 20px;
+        padding: 0;
+        width: 50px;
+        height: 50px;
+        font-size: 48px;
+        font-style: bold;
     }
 
 

@@ -48,7 +48,8 @@
     .slideshow {
         border-radius: 0;
         width: 100vw;
-        height: 35vw;
+        height: 50vw;
+        top: 0;
     }
 
     .foreground-image {

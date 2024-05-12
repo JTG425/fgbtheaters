@@ -18,17 +18,16 @@ const variants = {
 const MoviePoster = (props) => {
   const film = props.film;
   const rtsCode = film.rtsCode;
-  const capPosters = props.capPosters;
-  const parPosters = props.parPosters;
+  const posters = props.posters;
   const [poster, setPoster] = useState(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const poster = capPosters.find((poster) => poster.rtsCode === rtsCode);
+    const poster = posters.find((poster) => poster.rtsCode === rtsCode);
     if (poster != null) {
       setPoster(poster.imageUrl);
     }
-  }, [capPosters, rtsCode]);
+  }, [posters, rtsCode]);
 
   return (
     <div className="poster">

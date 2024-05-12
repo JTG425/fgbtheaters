@@ -75,13 +75,31 @@ a {
   justify-content: flex-start;
   background: var(--background);
   overflow-x: hidden;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .App::-webkit-scrollbar {
   display: none;
 }
+
+.App h1 {
+  font-size: 2.5rem;
+  color: var(--copy);
+}
+
+.App h2 {
+  font-size: 2rem;
+  color: var(--copy);
+}
+
+.App p {
+  font-size: 1.5rem;
+  color: var(--copy);
+}
+
 
 
 .page-container {
@@ -94,8 +112,10 @@ a {
   height: fit-content;
   background: var(--background);
   margin-top: 75px;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .page-container::-webkit-scrollbar {
@@ -115,5 +135,11 @@ a {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .page-container {
+    margin-top: 50px;
   }
 }

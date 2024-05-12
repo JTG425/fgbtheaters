@@ -18,8 +18,7 @@ function MovieCard(props) {
   const date = props.date;
   const shows = props.shows;
   const recieved = props.dataReceived;
-  const capPosters = props.capPosters;
-  const parPosters = props.parPosters;
+  const posters = props.posters;
 
   return (
     <motion.div className="movieCard">
@@ -31,8 +30,7 @@ function MovieCard(props) {
                 <motion.div className="film" key={filmIndex}>
                   <MoviePoster
                     film={film}
-                    capPosters={capPosters}
-                    parPosters={parPosters}
+                    posters={posters}
                   />
                   <div className="film-header">
                     <h3>{film.name}</h3>

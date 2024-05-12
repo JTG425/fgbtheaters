@@ -3,6 +3,7 @@ import "../pagestyles/home.css";
 import SlideShow from "../components/slideshow";
 import MovieCard from "../components/movieCard";
 import DatePicker from "../components/datepick";
+import SelectTheater from "../components/selecttheater";
 import "../componentstyles/datepicker.css";
 import { CiCalendarDate } from "react-icons/ci";
 import { motion } from "framer-motion";
@@ -34,10 +35,13 @@ function Home(props) {
 
   const dataReceived = props.dataReceived;
   const [date, setDate] = useState(handleDateFormating(new Date()));
-  const [selectedTheater, setSelectedTheater] = useState("Capitol");
+  const [selectedTheater, setSelectedTheater] = useState("capitol");
   const [showDatePicker, setShowDatePicker] = useState(false);
 
 
+  const handleTheaterChange = (theater) => {
+    setSelectedTheater(theater);
+  }
 
   const handleDateChange = (date) => {
     setDate(date);
@@ -45,8 +49,14 @@ function Home(props) {
 
 
   return (
-    <div className="page-container">
+    <motion.div
+      className="page-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
       <SlideShow bannerPosters={bannerPosters} />
+      <SelectTheater selected={selectedTheater} setSelected={handleTheaterChange} />
       <motion.div
         className="datePickerContainer"
       >
@@ -58,27 +68,26 @@ function Home(props) {
         {showDatePicker && (
           <DatePicker date={date} setDate={handleDateChange} />
         )}
+        <p>Show Times for {handleDisplayDate(date)}</p>
       </motion.div>
       <div className="movies-container">
-        {dataReceived && selectedTheater === "Capitol" ? (
+        {dataReceived && selectedTheater === "capitol" ? (
           <MovieCard
             date={date}
             shows={capShows}
             dataReceived={dataReceived}
-            capPosters={capPosters}
-            parPosters={parPosters}
+            posters={capPosters}
           />
         ) : (
           <MovieCard
             date={date}
             shows={parShows}
             dataReceived={dataReceived}
-            capPosters={capPosters}
-            parPosters={parPosters}
+            posters={parPosters}
           />
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
