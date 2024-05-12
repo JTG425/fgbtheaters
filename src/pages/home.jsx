@@ -2,19 +2,25 @@ import { useState, Suspense, useEffect } from "react";
 import "../pagestyles/home.css";
 import SlideShow from "../components/slideshow";
 import MovieCard from "../components/movieCard";
-import DatePicker from "react-datepicker";
+import DatePicker from "../components/datepick";
 import "../componentstyles/datepicker.css";
 import { CiCalendarDate } from "react-icons/ci";
 import { motion } from "framer-motion";
 
 const handleDateFormating = (date) => {
+  const day = date.getDate();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const day = date.getDate();
   const formattedMonth = month < 10 ? `0${month}` : month.toString();
   const formattedDay = day < 10 ? `0${day}` : day.toString();
-
   return `${formattedMonth}${formattedDay}${year}`;
+};
+
+const handleDisplayDate = (date) => {
+  const month = date.slice(0, 2);
+  const day = date.slice(2, 4);
+  const year = date.slice(4, 8);
+  return `${month} / ${day} / ${year}`;
 };
 
 function Home(props) {
@@ -27,35 +33,36 @@ function Home(props) {
   const bannerPosters = props.bannerPosters;
 
   const dataReceived = props.dataReceived;
-  const [startDate, setStartDate] = useState(new Date());
+  const [date, setDate] = useState(handleDateFormating(new Date()));
   const [selectedTheater, setSelectedTheater] = useState("Capitol");
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const [formattedDate, setFormattedDate] = useState(
-    handleDateFormating(startDate)
-  );
+
+
+  const handleDateChange = (date) => {
+    setDate(date);
+  };
+
 
   return (
     <div className="page-container">
       <SlideShow bannerPosters={bannerPosters} />
       <motion.div
         className="datePickerContainer"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
       >
-        <CiCalendarDate />
-        <DatePicker
-          className="datePicker"
-          selected={startDate}
-          onChange={(date) => {
-            setStartDate(date);
-            setFormattedDate(handleDateFormating(date));
-          }}
-        />
+        <motion.button
+          className="datePickerButton"
+          onClick={() => setShowDatePicker(!showDatePicker)}
+        ><CiCalendarDate />{handleDisplayDate(date)}</motion.button>
+
+        {showDatePicker && (
+          <DatePicker date={date} setDate={handleDateChange} />
+        )}
       </motion.div>
       <div className="movies-container">
         {dataReceived && selectedTheater === "Capitol" ? (
           <MovieCard
-            date={formattedDate}
+            date={date}
             shows={capShows}
             dataReceived={dataReceived}
             capPosters={capPosters}
@@ -63,7 +70,7 @@ function Home(props) {
           />
         ) : (
           <MovieCard
-            date={formattedDate}
+            date={date}
             shows={parShows}
             dataReceived={dataReceived}
             capPosters={capPosters}
@@ -76,3 +83,5 @@ function Home(props) {
 }
 
 export default Home;
+
+

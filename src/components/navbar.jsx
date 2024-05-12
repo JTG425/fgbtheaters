@@ -3,8 +3,8 @@ import { BrowserRouter, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "../componentstyles/navbar.css";
 import DropDown from "./dropdown";
-import fullNavLogo from "../assets/fullNav.svg";
-import smallNavLogo from "../assets/smallNav.svg";
+import fullNavLogo from '../assets/fullnav.svg';
+import smallNavLogo from '../assets/smallNav.svg';
 
 function NavBar(props) {
   const pages = props.pages;

@@ -19,6 +19,7 @@ function App() {
   const [rtsCodes, setRtsCodes] = useState([]);
   const [dataReceived, setDataReceived] = useState(false);
   const [loadScreen, setLoadScreen] = useState(true);
+  const [disableScroll, setDisableScroll] = useState(false);
 
   const [capParsed, setCapParsed] = useState(false);
   const [parParsed, setParParsed] = useState(false);
@@ -289,10 +290,22 @@ function App() {
         setLoadScreen(false);
         setTimeout(() => {
           fadeRef.current.style.display = "none";
+          setDisableScroll(false);
         }, 1000);
       }, 1000);
     }
   }, [dataReceived]);
+
+  const scrollVariants = {
+    disable: {
+      opacity: 0,
+      overflowY: "hidden",
+    },
+    enable: {
+      opacity: 1,
+      overflowY: "scroll",
+    }
+  }
 
   return (
     <div className="App">

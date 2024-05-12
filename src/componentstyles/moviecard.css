@@ -114,11 +114,16 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
     }
 
     .poster {
-        width: 100%;
+        width: fit-content;
         height: auto;
+    }
+
+    .poster img {
+        width: 30vw;
     }
 
     .showtime-button {

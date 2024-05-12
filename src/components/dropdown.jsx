@@ -18,7 +18,7 @@ function DropDown(props) {
       case true:
         anime({
           targets: ".dropdown",
-          translateY: [-800, 860],
+          translateY: [400, 860],
           opacity: [0, 1],
           easing: "easeOutExpo",
           duration: 900,
@@ -28,7 +28,7 @@ function DropDown(props) {
 
         anime({
           targets: ".dropdown-button",
-          translateY: [-800, 0],
+          translateY: [-100, 0],
           opacity: [0, 1],
           easing: "easeOutExpo",
           duration: 900,
@@ -40,7 +40,7 @@ function DropDown(props) {
       case false:
         anime({
           targets: ".dropdown",
-          translateY: [860, -800],
+          translateY: [860, 400],
           opacity: [1, 0],
           easing: "easeOutExpo",
           delay: 200,
@@ -50,7 +50,7 @@ function DropDown(props) {
 
         anime({
           targets: ".dropdown-button",
-          translateY: [0, -800],
+          translateY: [0, -100],
           easing: "easeOutExpo",
           duration: 900,
           delay: anime.stagger(100, { from: "first" }),
