@@ -30,7 +30,9 @@ function MovieCard(props) {
           groupedShows[baseName] = {
             name: baseName,
             shows: [],
-            rtsCode: film.rtsCode
+            rtsCode: film.rtsCode,
+            rating: film.rating,
+            length: film.length,
           };
         }
         showForDate.forEach(show => {
@@ -47,10 +49,6 @@ function MovieCard(props) {
 
   const groupedMovies = received ? groupShowsByMovie() : [];
 
-  useEffect(() => {
-    console.log(groupedMovies);
-  }, [groupedMovies]);
-
   return (
     <motion.div className="movieCard">
       {received ? (
@@ -63,7 +61,11 @@ function MovieCard(props) {
                 posters={posters}
               />
               <div className="film-header">
-                <h3>{film.name}</h3>
+                <h3 className="film-name">{film.name}</h3>
+                <span className='film-info'>
+                  <p>{film.rating}</p>
+                  <p>{film.length} minutes</p>
+                </span>
                 {film.shows.map((show, showIndex) => (
                   <div className="showtime" key={showIndex}>
                     <a
