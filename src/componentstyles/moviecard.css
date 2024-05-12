@@ -105,8 +105,9 @@
     }
 
     .film-header h3 {
-        margin-top: 10px;
+        margin-top: 20px;
         font-size: 3vw;
+        margin-bottom: 25px;
     }
 
     .film {
@@ -123,7 +124,7 @@
     }
 
     .poster img {
-        width: 30vw;
+        width: 75vw;
     }
 
     .showtime-button {
