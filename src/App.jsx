@@ -14,8 +14,15 @@ function App() {
   const [currentPage, setCurrentPage] = useState("Home");
   const [capitolShows, setCapitolShows] = useState([]);
   const [paramountShows, setParamountShows] = useState([]);
+  const [upcomingCapShows, setUpcomingCapShows] = useState([]);
+  const [upcomingParShows, setUpcomingParShows] = useState([]);
+
+
   const [capRtsCodes, setCapRtsCodes] = useState([]);
   const [parRtsCodes, setParRtsCodes] = useState([]);
+  const [upcomingCapRtsCodes, setUpcomingCapRtsCodes] = useState([]);
+  const [upcomingParRtsCodes, setUpcomingParRtsCodes] = useState([]);
+
   const [rtsCodes, setRtsCodes] = useState([]);
   const [dataReceived, setDataReceived] = useState(false);
   const [loadScreen, setLoadScreen] = useState(true);
@@ -23,9 +30,13 @@ function App() {
 
   const [capParsed, setCapParsed] = useState(false);
   const [parParsed, setParParsed] = useState(false);
+  const [upcomingCapParsed, setUpcomingCapParsed] = useState(false);
+  const [upcomingParParsed, setUpcomingParParsed] = useState(false);
 
   const [capPosters, setCapPosters] = useState([]);
   const [parPosters, setParPosters] = useState([]);
+  const [upcomingCapPosters, setUpcomingCapPosters] = useState([]);
+  const [upcomingParPosters, setUpcomingParPosters] = useState([]);
 
   const [posters, setPosters] = useState([]);
   const [bannerPosters, setBannerPosters] = useState([]);
@@ -96,8 +107,28 @@ function App() {
         );
         const capXML = await response.text();
         parseCapXML(capXML);
+        parseUpcomingCapXML(capXML);
       } catch (error) {
         console.error("Error fetching Capitol shows:", error);
+      }
+    };
+
+    const fetchParamountShows = async () => {
+      try {
+        const response = await fetch(
+          `https://8qgqyq3ke0.execute-api.us-east-1.amazonaws.com/default/send-xml`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ theater: "Paramount" }),
+          }
+        );
+        const parXML = await response.text();
+        parseParXML(parXML);
+      } catch (error) {
+        console.error("Error fetching Paramount shows:", error);
       }
     };
 
@@ -149,25 +180,6 @@ function App() {
       fetchCapPosters(allRtsCodes);
     };
 
-    const fetchParamountShows = async () => {
-      try {
-        const response = await fetch(
-          `https://8qgqyq3ke0.execute-api.us-east-1.amazonaws.com/default/send-xml`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ theater: "Paramount" }),
-          }
-        );
-        const parXML = await response.text();
-        parseParXML(parXML);
-      } catch (error) {
-        console.error("Error fetching Paramount shows:", error);
-      }
-    };
-
     const parseParXML = async (parXML) => {
       const parser = new DOMParser();
       const parDoc = parser.parseFromString(parXML, "application/xml");
@@ -216,6 +228,37 @@ function App() {
       fetchParPosters(allRtsCodes);
     };
 
+    const parseUpcomingCapXML = async (xml) => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(xml, "application/xml");
+
+      const upcomingTitleElements = doc.getElementsByTagName("upcomingtitles");
+
+      let allRtsCodes = [];
+
+      const extractedTitles = Array.from(upcomingTitleElements).map(
+        (upcomingTitleElement) => {
+          const titleElements = upcomingTitleElement.getElementsByTagName("title");
+          const extractedTitles = Array.from(titleElements).map(titleElement => {
+            const name = titleElement.querySelector("name").textContent;
+            const rating = titleElement.querySelector("rating").textContent;
+            const length = titleElement.querySelector("length").textContent;
+            const website = titleElement.querySelector("website").textContent;
+            const rtsCode = titleElement.querySelector("RtsCode").textContent;
+            const startDate = titleElement.querySelector("StartDate").textContent;
+            allRtsCodes.push(rtsCode);
+            return { name, rating, length, website, rtsCode, startDate };
+          });
+          return { upcoming: extractedTitles };
+        }
+      );
+      setUpcomingCapShows(extractedTitles);
+      setUpcomingCapRtsCodes([...new Set(allRtsCodes)]);
+      setUpcomingCapParsed(true);
+      fetchUpcomingCapPosters(allRtsCodes);
+    };
+
+
     const fetchCapPosters = async (rcodes) => {
       try {
         const response = await fetch(
@@ -232,6 +275,29 @@ function App() {
         if (json && json.images) {
           setCapPosters(json.images);
           fetchSlideshowPosters(rcodes);
+        } else {
+          console.error("Received invalid or empty images array:", json);
+        }
+      } catch (error) {
+        console.error("Error fetching posters for chunk:", chunk, error);
+      }
+    };
+
+    const fetchUpcomingCapPosters = async (rcodes) => {
+      try {
+        const response = await fetch(
+          `https://1shn6ru7ic.execute-api.us-east-1.amazonaws.com/default/send-posters`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ codes: rcodes }),
+          }
+        );
+        const json = await response.json();
+        if (json && json.images) {
+          setUpcomingCapPosters(json.images);
         } else {
           console.error("Received invalid or empty images array:", json);
         }
@@ -344,6 +410,10 @@ function App() {
                       bannerPosters={bannerPosters}
                       capPosters={capPosters}
                       parPosters={parPosters}
+                      upcomingCapShows={upcomingCapShows}
+                      upcomingParShows={upcomingParShows}
+                      upcomingCapPosters={upcomingCapPosters}
+                      upcomingParPosters={upcomingParPosters}
                     />
                   </PageWrapper>
                 }

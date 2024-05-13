@@ -24,7 +24,6 @@ function MovieCard(props) {
     shows.forEach(film => {
       const baseName = film.name.split('(')[0].trim();
       const showForDate = film.shows.filter(show => show.date === date);
-
       if (showForDate.length > 0) {  // Check if there are shows for the given date
         if (!groupedShows[baseName]) {
           groupedShows[baseName] = {
@@ -33,6 +32,7 @@ function MovieCard(props) {
             rtsCode: film.rtsCode,
             rating: film.rating,
             length: film.length,
+            website: film.website,
           };
         }
         showForDate.forEach(show => {
@@ -61,7 +61,9 @@ function MovieCard(props) {
                 posters={posters}
               />
               <div className="film-header">
-                <h3 className="film-name">{film.name}</h3>
+                <a href={film.website} target="_blank" rel="noopener noreferrer">
+                  <h3 className="film-name">{film.name}</h3>
+                </a>
                 <span className='film-info'>
                   <p>{film.rating}</p>
                   <p>{film.length} minutes</p>

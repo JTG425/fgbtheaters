@@ -4,6 +4,8 @@ import SlideShow from "../components/slideshow";
 import MovieCard from "../components/movieCard";
 import DatePicker from "../components/datepick";
 import SelectTheater from "../components/selecttheater";
+import Upcoming from "../components/upcoming";
+
 import "../componentstyles/datepicker.css";
 import { CiCalendarDate } from "react-icons/ci";
 import { motion } from "framer-motion";
@@ -32,6 +34,12 @@ function Home(props) {
   const capPosters = props.capPosters;
   const parPosters = props.parPosters;
   const bannerPosters = props.bannerPosters;
+
+  const upcomingCapShows = props.upcomingCapShows;
+
+  const upcomingCapPosters = props.upcomingCapPosters;
+
+
 
   const dataReceived = props.dataReceived;
   const [date, setDate] = useState(handleDateFormating(new Date()));
@@ -87,6 +95,11 @@ function Home(props) {
           />
         )}
       </div>
+      <Upcoming
+        upcomingCapShows={upcomingCapShows}
+        upcomingCapPosters={upcomingCapPosters}
+        dataReceived={dataReceived}
+      />
     </motion.div>
   );
 }
