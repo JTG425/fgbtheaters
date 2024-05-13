@@ -1,7 +1,8 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { SocialIcon } from 'react-social-icons';
 import loading from "./assets/loading.svg";
 import NavBar from "./components/navbar";
 import Home from "./pages/home";
@@ -10,7 +11,9 @@ import Locations from "./pages/locations";
 import About from "./pages/about";
 import Admin from "./pages/admin";
 
+
 function App() {
+
   const [currentPage, setCurrentPage] = useState("Home");
   const [capitolShows, setCapitolShows] = useState([]);
   const [paramountShows, setParamountShows] = useState([]);
@@ -430,7 +433,7 @@ function App() {
                 path="/locations"
                 element={
                   <PageWrapper>
-                    <Locations />
+                    <Locations key={import.meta.env.GOOGLE_MAPS_API_KEY} />
                   </PageWrapper>
                 }
               />
@@ -453,6 +456,10 @@ function App() {
             </Routes>
           </motion.div>
         </AnimatePresence>
+        <div className='footer'>
+          <SocialIcon key='facebook-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.facebook.com" target='_blank' />
+          <SocialIcon key='insta-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.instagram.com/fgbtheaters/" target='_blank' />
+        </div>
       </BrowserRouter>
     </div>
   );

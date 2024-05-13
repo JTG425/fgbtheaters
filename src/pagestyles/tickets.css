@@ -5,6 +5,7 @@
     overscroll-behavior: contain;
     width: 100%;
     height: fit-content;
+    margin-top: 10px;
 }
 
 .tickets h2 {

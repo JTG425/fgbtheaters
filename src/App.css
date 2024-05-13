@@ -111,7 +111,7 @@ a {
   max-width: 1500px;
   height: fit-content;
   background: var(--background);
-  margin-top: 75px;
+  margin-top: 50px;
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
   scrollbar-width: none;
@@ -126,6 +126,17 @@ a {
   height: 100px;
   width: 100px;
   animation: spin 10s linear infinite;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 100vw;
+  margin-bottom: 0;
+  gap: 10px;
 }
 
 @keyframes spin {

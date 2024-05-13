@@ -3,17 +3,50 @@ import "../pagestyles/home.css";
 import React, { Suspense } from "react";
 import { motion } from "framer-motion";
 import { FaPhoneAlt } from "react-icons/fa";
-import Map from "react-map-gl";
+import Map, { Marker } from 'react-map-gl';
+
+
 
 function CapitolMap() {
-  return <p>Capitol Theater Map</p>;
+  const key = import.meta.env.VITE_MAPBOX_API_KEY;
+  return (
+    <Map
+      className="Map"
+      mapboxAccessToken={key}
+      initialViewState={{
+        longitude: -72.57836915903455,
+        latitude: 44.26092378286133,
+        zoom: 14
+      }}
+      style={{ width: '30vw', height: '30vw' }}
+      mapStyle="mapbox://styles/mapbox/streets-v9"
+    >
+      <Marker latitude={44.26092378286133} longitude={-72.57836915903455} />
+    </Map>
+  );
 }
+
 
 function ParamountMap() {
-  return <p>Paramount Theater Map</p>;
+  const key = import.meta.env.VITE_MAPBOX_API_KEY;
+  return (
+    <Map
+      className="Map"
+      mapboxAccessToken={key}
+      initialViewState={{
+        longitude: -72.50370899940566,
+        latitude: 44.19952086200256,
+        zoom: 14
+      }}
+      style={{ width: '30vw', height: '30vw' }}
+      mapStyle="mapbox://styles/mapbox/streets-v9"
+    >
+      <Marker latitude={44.19952086200256} longitude={-72.50370899940566} />
+    </Map>
+  );
 }
 
-function Locations() {
+function Locations(props) {
   return (
     <div className="page-container">
       <div className="locations">
