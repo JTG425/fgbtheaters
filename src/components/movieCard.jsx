@@ -2,7 +2,6 @@ import "../componentstyles/moviecard.css";
 import { motion, AnimatePresence } from "framer-motion";
 import MoviePoster from "./moviePoster";
 import { useEffect, useState } from "react";
-
 const convertToStandardTime = (militaryTime) => {
   const hoursMinutes = militaryTime.match(/(\d{2})(\d{2})/);
   let hours = parseInt(hoursMinutes[1], 10);
@@ -15,9 +14,15 @@ const convertToStandardTime = (militaryTime) => {
 
 function MovieCard(props) {
   const date = props.date;
-  const shows = props.shows;
   const received = props.dataReceived;
-  const posters = props.posters;
+  const capShows = props.capShows;
+  const parShows = props.parShows;
+  const capPosters = props.capPosters;
+  const parPosters = props.parPosters;
+  const [shows, setShows] = useState(capShows);
+  const [posters, setPosters] = useState(capPosters);
+
+  const selectedTheater = props.selectedTheater;
 
   const groupShowsByMovie = () => {
     const groupedShows = {};
@@ -49,6 +54,12 @@ function MovieCard(props) {
 
   const groupedMovies = received ? groupShowsByMovie() : [];
 
+  useEffect(() => {
+    setShows(selectedTheater === "capitol" ? capShows : parShows);
+    setPosters(selectedTheater === "capitol" ? capPosters : parPosters);
+
+  }, [selectedTheater]);
+
   return (
     <motion.div className="movieCard">
       {received ? (
@@ -58,7 +69,9 @@ function MovieCard(props) {
               <MoviePoster
                 film={film}
                 rtsCode={film.rtsCode}
-                posters={posters}
+                capPosters={capPosters}
+                parPosters={parPosters}
+                selectedTheater={selectedTheater}
               />
               <div className="film-header">
                 <a href={film.website} target="_blank" rel="noopener noreferrer">

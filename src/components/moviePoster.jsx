@@ -18,16 +18,25 @@ const variants = {
 const MoviePoster = (props) => {
   const film = props.film;
   const rtsCode = film.rtsCode;
-  const posters = props.posters;
+  const capPosters = props.capPosters;
+  const parPosters = props.parPosters;
+  const selectedTheater = props.selectedTheater;
+
+  const [posters, setPosters] = useState(selectedTheater === "capitol" ? capPosters : parPosters);
+
+
   const [poster, setPoster] = useState(null);
   const [error, setError] = useState(false);
+
+
 
   useEffect(() => {
     const poster = posters.find((poster) => poster.rtsCode === rtsCode);
     if (poster != null) {
-      setPoster(poster.imageUrl);
+      setPoster(poster.posterData.url.href);
     }
   }, [posters, rtsCode]);
+
 
   return (
     <div className="poster">

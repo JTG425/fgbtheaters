@@ -1,0 +1,16 @@
+{
+  "resourceName": "fgbs3storage",
+  "policyUUID": "e9a68004",
+  "bucketName": "fgbs3storageaws",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

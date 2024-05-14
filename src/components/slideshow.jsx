@@ -36,7 +36,7 @@ const SlideShow = (props) => {
   };
 
   useEffect(() => {
-    const images = bannerPosters.map((poster) => poster.imageUrl);
+    const images = bannerPosters.map((poster) => poster.url.href);
     setImages(images);
   }, [bannerPosters]);
 

@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fgbtheaters-dev-238b9-authRole",
+      "UnauthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-dev-238b9-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-dev-238b9-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-fgbtheaters-dev-238b9-deployment",
+      "UnauthRoleName": "amplify-fgbtheaters-dev-238b9-unauthRole",
+      "StackName": "amplify-fgbtheaters-dev-238b9",
+      "StackId": "arn:aws:cloudformation:us-east-1:767397816314:stack/amplify-fgbtheaters-dev-238b9/49a48470-1210-11ef-b30b-1213f87eb85d",
+      "AmplifyAppId": "d2ku2hrhnlj4kj"
+    },
+    "categories": {
+      "auth": {
+        "fgbtheatersaad6f1b0": {}
+      },
+      "storage": {
+        "fgbs3storage": {}
+      }
+    }
+  }
+}

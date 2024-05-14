@@ -1,0 +1,19 @@
+export type AmplifyDependentResourcesAttributes = {
+  "auth": {
+    "fgbtheatersaad6f1b0": {
+      "AppClientID": "string",
+      "AppClientIDWeb": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
+      "UserPoolArn": "string",
+      "UserPoolId": "string",
+      "UserPoolName": "string"
+    }
+  },
+  "storage": {
+    "fgbs3storage": {
+      "BucketName": "string",
+      "Region": "string"
+    }
+  }
+}
