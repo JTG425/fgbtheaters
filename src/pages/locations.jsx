@@ -18,7 +18,7 @@ function CapitolMap() {
         latitude: 44.26092378286133,
         zoom: 14
       }}
-      style={{ width: '30vw', height: '30vw' }}
+      style={{ width: '325px', height: '325px' }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >
       <Marker latitude={44.26092378286133} longitude={-72.57836915903455} />
@@ -38,7 +38,7 @@ function ParamountMap() {
         latitude: 44.19952086200256,
         zoom: 14
       }}
-      style={{ width: '30vw', height: '30vw' }}
+      style={{ width: '325px', height: '325px' }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >
       <Marker latitude={44.19952086200256} longitude={-72.50370899940566} />
@@ -61,6 +61,8 @@ function Locations(props) {
         <div className="maps">
           <motion.div className="cap-map">
             <h3>Capitol Theaters</h3>
+            <p>93 State St, Montpelier, VT 05602</p>
+            <br />
             <div className="map-container">
               <Suspense fallback={<div>Loading...</div>}>
                 <CapitolMap />
@@ -76,6 +78,8 @@ function Locations(props) {
           </motion.div>
           <motion.div className="par-map">
             <h3>Paramount Theaters</h3>
+            <p>237 N Main St, Barre, VT 05641</p>
+            <br />
             <div className="map-container">
               <Suspense fallback={<div>Loading...</div>}>
                 <ParamountMap />

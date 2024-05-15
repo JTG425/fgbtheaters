@@ -86,8 +86,21 @@
     margin-bottom: 10px;
 }
 
+.cap-map p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+
+
+
 .par-map h3 {
     margin-bottom: 10px;
+}
+
+.par-map p {
+    margin: 0;
+    font-size: 1rem;
 }
 
 .par-map {

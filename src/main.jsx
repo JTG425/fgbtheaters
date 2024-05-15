@@ -92,7 +92,7 @@ const parseCapXML = async (capXML) => {
       const rtsCode =
         capFilmTitleElement.querySelector("RtsCode").textContent;
       allRtsCodes.push(rtsCode);
-      rtsCodes.push(rtsCode);
+      rtsCodes.push({ rtsCode: rtsCode, name: name });
 
       const capShowElements =
         capFilmTitleElement.getElementsByTagName("show");
@@ -282,9 +282,11 @@ const fetchBannerPosters = async (rcodes) => {
   for (let rcode of rcodes) {
     try {
       const getBannerPoster = await getUrl({
-        path: `public/images/${rcode}/moviebutton.jpg`,
+        path: `public/images/${rcode.rtsCode}/moviebutton.jpg`,
       });
-      bannerPosters.push(getBannerPoster);
+      if (!rcode.name.includes('(') || !rcode.name.includes(')')) {
+        bannerPosters.push({ rtsCode: rcode, poster: getBannerPoster });
+      }
     } catch (error) {
       console.log('Error : ', error);
     }

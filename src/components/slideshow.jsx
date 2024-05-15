@@ -36,7 +36,8 @@ const SlideShow = (props) => {
   };
 
   useEffect(() => {
-    const images = bannerPosters.map((poster) => poster.url.href);
+    const images = bannerPosters.map((poster) => poster.poster.url.href);
+    console.log(bannerPosters)
     setImages(images);
   }, [bannerPosters]);
 
@@ -47,6 +48,7 @@ const SlideShow = (props) => {
 
     return () => clearInterval(interval);
   }, [imageIndex]);
+
 
   return (
     <div className="slideshow">

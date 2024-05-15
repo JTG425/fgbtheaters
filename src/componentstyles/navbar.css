@@ -132,7 +132,7 @@
     .dropdown {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 20px;
         position: absolute;
         top: -800px;
         right: 0;
@@ -173,12 +173,14 @@
         justify-content: center;
         align-items: center;
         padding: 0.5rem 1rem;
-        height: fit-content;
+        height: 85px;
         width: 90vw;
         border-radius: var(--border-radius);
-        border: none;
+        border: 1px solid var(--border);
         background: var(--background);
         cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
     }
 
 }

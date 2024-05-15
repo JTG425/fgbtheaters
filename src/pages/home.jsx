@@ -49,6 +49,7 @@ function Home(props) {
   }
 
   const handleDateChange = (date) => {
+    setShowDatePicker(false);
     setDate(date);
   };
 
@@ -73,7 +74,6 @@ function Home(props) {
         {showDatePicker && (
           <DatePicker date={date} setDate={handleDateChange} />
         )}
-        <p>Show Times for {handleDisplayDate(date)}</p>
       </motion.div>
       <div className="movies-container">
         {dataReceived && selectedTheater === "capitol" ? (

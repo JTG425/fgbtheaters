@@ -17,6 +17,12 @@
       },
       "storage": {
         "fgbs3storage": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2ku2hrhnlj4kj",
+          "type": "manual"
+        }
       }
     }
   }
