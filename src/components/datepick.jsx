@@ -35,11 +35,11 @@ const DatePicker = (props) => {
     const dayVariants = {
         selected: {
             background: '#c61404',
-            color: 'white',
+            color: 'rgb(255, 255, 255)',
         },
         notSelected: {
             background: '#ffffff',
-            color: 'black',
+            color: 'rgb(0, 0, 0)',
         }
     }
     for (let day = 1; day <= daysInMonth; day++) {
@@ -119,9 +119,6 @@ const DatePicker = (props) => {
         rows.push(<tr key={i}>{rowDays}</tr>);
     }
 
-    useEffect(() => {
-        console.log('Date changed to:', date);
-    }, [date]);
 
 
 
@@ -129,7 +126,7 @@ const DatePicker = (props) => {
         <div className="date-picker">
             <div className="header">
                 <button onClick={() => navigateMonth('prev')}>&lt;</button>
-                <div>{months[currentMonth]} {currentYear}</div>
+                <div><h2>{months[currentMonth]} {currentYear}</h2></div>
                 <button onClick={() => navigateMonth('next')}>&gt;</button>
             </div>
             <table>
