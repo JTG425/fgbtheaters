@@ -61,7 +61,7 @@ function NavBar(props) {
               setPage("Home");
             }}
           >
-            Home
+            <p>Home</p>
           </motion.button>
         </Link>
 
@@ -79,7 +79,7 @@ function NavBar(props) {
               setPage("Tickets");
             }}
           >
-            Buy Tickets
+            <p>Buy Tickets</p>
           </motion.button>
         </Link>
 
@@ -97,7 +97,7 @@ function NavBar(props) {
               setPage("Locations");
             }}
           >
-            Locations
+            <p>Locations</p>
           </motion.button>
         </Link>
 
@@ -115,7 +115,7 @@ function NavBar(props) {
               setPage("About");
             }}
           >
-            About
+            <p>About</p>
           </motion.button>
         </Link>
       </div>

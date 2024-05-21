@@ -81,6 +81,13 @@
     width: 200px;
 }
 
+.showtime-button p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--foreground);
+}
+
 .film {
     display: flex;
     flex-direction: row;
@@ -121,6 +128,7 @@
     .film-name {
         font-size: 1.25rem;
         margin-bottom: 1px;
+        margin-top: 0.5rem;
     }
 
     .film {
@@ -138,10 +146,12 @@
 
     .poster img {
         width: 75vw;
+        max-width: 300px;
     }
 
     .showtime-button {
         width: 50vw;
+        height: 75px;
         font-size: 1rem;
         background: var(--secondary);
         color: var(--foreground);

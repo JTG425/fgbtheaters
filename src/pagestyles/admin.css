@@ -1,0 +1,199 @@
+fieldset {
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+    min-inline-size: min-content;
+    border-width: 2px;
+    border-style: groove;
+    border-color: rgb(192, 192, 192);
+    border-image: initial;
+}
+
+
+
+
+
+.admin-console {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-console-header {
+    display: flex;
+    width: 90vw;
+    max-width: 1400px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 10px;
+}
+
+.sign-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.announcement-table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+    max-width: 1400px;
+    margin-bottom: 1rem;
+}
+
+.announcement-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.announcement-table-container table thead th {
+    width: fit-content;
+    background: var(--background);
+    color: var(--text);
+    font-size: 50%;
+    text-align: center;
+    padding: 1rem;
+}
+
+.announcement-table-container table tbody tr:nth-child(even) {
+    background-color: var(--background-light);
+}
+
+.announcement-table-container table td {
+    color: var(--text);
+    font-size: 0.8rem;
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    overflow-x: scroll;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.edit-announcement-container {
+    position: fixed;
+    background: var(--foreground);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    height: fit-content;
+    margin-bottom: 1rem;
+    z-index: 5;
+    overflow: scroll;
+    padding: 1rem;
+}
+
+.edit-announcement-container h3 {
+    margin: 0;
+    padding: 0;
+    color: var(--text);
+    width: 100%;
+    text-align: center;
+
+}
+
+.edit-announcement-container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    height: 100%;
+    padding: 1rem;
+}
+
+.edit-announcement-container form input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+}
+
+.edit-announcement-container form textarea {
+    width: 50vw;
+    height: 200px;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    resize: none;
+}
+
+.edit-announcement-container form button {
+    background: var(--secondary);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-size: smaller;
+    width: 100%;
+}
+
+.edit-announcement-container form button:hover {
+    background: var(--background);
+    color: var(--text);
+}
+
+.edit-add-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.edit-add-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.announcement-legend button {
+    background: var(--secondary);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-size: smaller;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.action-buttons button {
+    background: var(--secondary);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    width: fit-content;
+    font-size: medium;
+}

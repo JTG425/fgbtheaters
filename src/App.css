@@ -128,14 +128,29 @@ a {
   animation: spin 10s linear infinite;
 }
 
+
 .footer {
+  position: relative;
+  bottom: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 60px;
   width: 100vw;
-  margin-bottom: 0;
+  margin-top: 25px;
+}
+
+.footer p {
+  font-size: 0.8rem;
+  color: var(--copy-light);
+}
+
+.footer-socials {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
 }
 

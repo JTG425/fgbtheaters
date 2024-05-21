@@ -35,6 +35,14 @@
     color: var(--copy);
 }
 
+.button-text p {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: bold;
+
+}
+
 .toggle-slider {
     position: absolute;
     z-index: 0;

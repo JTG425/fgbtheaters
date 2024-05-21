@@ -54,7 +54,7 @@ const SliderToggle = ({ selected, setSelected }) => {
                     animate={selected === 'capitol' ? 'selected' : 'notselected'}
                     variants={textVariants}
                     transition={{ duration: 0.25 }}
-                >Capitol Theater</motion.span>
+                ><p>Capitol Theater</p></motion.span>
             </button>
             <button
                 className="toggle-button"
@@ -70,7 +70,7 @@ const SliderToggle = ({ selected, setSelected }) => {
                     variants={textVariants}
                     transition={{ duration: 0.25 }}
                 >
-                    Paramount Theater</motion.span>
+                    <p>Paramount Theater</p></motion.span>
             </button>
             <div
                 className="toggle-slider"

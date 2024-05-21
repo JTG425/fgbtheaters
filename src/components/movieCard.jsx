@@ -94,7 +94,7 @@ function MovieCard(props) {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        {convertToStandardTime(show.time)}{show.subtitleTag}
+                        <p>{convertToStandardTime(show.time)}{show.subtitleTag}</p>
                       </motion.button>
                     </a>
                   </div>

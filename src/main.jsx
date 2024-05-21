@@ -304,6 +304,7 @@ const wait = () => {
 }
 
 fetchData();
+console.log(capPosters);
 
 const root = () => {
   ReactDOM.createRoot(document.getElementById('root')).render(

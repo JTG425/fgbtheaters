@@ -133,8 +133,11 @@ function App(props) {
           </motion.div>
         </AnimatePresence>
         <div className='footer'>
-          <SocialIcon key='facebook-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.facebook.com" target='_blank' />
-          <SocialIcon key='insta-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.instagram.com/fgbtheaters/" target='_blank' />
+          <span className="footer-socials">
+            <SocialIcon key='facebook-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.facebook.com" target='_blank' />
+            <SocialIcon key='insta-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.instagram.com/fgbtheaters/" target='_blank' />
+          </span>
+          <p><sup>©</sup>Copyright 2018 FGB Theaters</p>
         </div>
       </BrowserRouter>
     </div>
