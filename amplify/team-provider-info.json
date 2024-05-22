@@ -1,55 +1,28 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-fgbtheaters-dev-238b9-authRole",
-      "UnauthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-dev-238b9-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-dev-238b9-authRole",
+      "AuthRoleName": "amplify-fgbtheaters-dev-f2bb9-authRole",
+      "UnauthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-dev-f2bb9-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-dev-f2bb9-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-fgbtheaters-dev-238b9-deployment",
-      "UnauthRoleName": "amplify-fgbtheaters-dev-238b9-unauthRole",
-      "StackName": "amplify-fgbtheaters-dev-238b9",
-      "StackId": "arn:aws:cloudformation:us-east-1:767397816314:stack/amplify-fgbtheaters-dev-238b9/49a48470-1210-11ef-b30b-1213f87eb85d",
-      "AmplifyAppId": "d2ku2hrhnlj4kj"
+      "DeploymentBucketName": "amplify-fgbtheaters-dev-f2bb9-deployment",
+      "UnauthRoleName": "amplify-fgbtheaters-dev-f2bb9-unauthRole",
+      "StackName": "amplify-fgbtheaters-dev-f2bb9",
+      "StackId": "arn:aws:cloudformation:us-east-1:767397816314:stack/amplify-fgbtheaters-dev-f2bb9/04ddce20-17d6-11ef-be50-12a67e414383",
+      "AmplifyAppId": "d5vhylij0llj8"
     },
     "categories": {
       "auth": {
-        "fgbtheatersaad6f1b0": {}
+        "fgbtheaters2ff27a91": {}
       },
       "storage": {
-        "fgbs3storage": {}
+        "fgbstorage": {}
       },
       "hosting": {
         "amplifyhosting": {
-          "appId": "d2ku2hrhnlj4kj",
+          "appId": "d5vhylij0llj8",
           "type": "manual"
         }
-      }
-    }
-  },
-  "main": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-fgbtheaters-main-c188c-authRole",
-      "UnauthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-main-c188c-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::767397816314:role/amplify-fgbtheaters-main-c188c-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-fgbtheaters-main-c188c-deployment",
-      "UnauthRoleName": "amplify-fgbtheaters-main-c188c-unauthRole",
-      "StackName": "amplify-fgbtheaters-main-c188c",
-      "StackId": "arn:aws:cloudformation:us-east-1:767397816314:stack/amplify-fgbtheaters-main-c188c/ae658660-17c5-11ef-9932-0e68c3dab4f3",
-      "AmplifyAppId": "d2ku2hrhnlj4kj"
-    },
-    "categories": {
-      "auth": {
-        "fgbtheatersaad6f1b0": {}
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d2ku2hrhnlj4kj",
-          "type": "manual"
-        }
-      },
-      "storage": {
-        "fgbs3storage": {}
       }
     }
   }

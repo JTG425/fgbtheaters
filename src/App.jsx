@@ -23,6 +23,7 @@ function App(props) {
   const upcomingCapPosters = props.upcomingCapPosters;
   const upcomingParShows = props.upcomingParShows;
   const upcomingParPosters = props.upcomingParPosters;
+  const announcements = props.announcements;
   const dataReceived = props.dataReceived;
 
 
@@ -92,6 +93,7 @@ function App(props) {
                       upcomingParShows={upcomingParShows}
                       upcomingCapPosters={upcomingCapPosters}
                       upcomingParPosters={upcomingParPosters}
+                      announcements={announcements}
                       dataReceived={dataReceived}
                     />
                   </PageWrapper>

@@ -8,7 +8,27 @@ import { generateClient } from 'aws-amplify/api';
 import { getProperties } from 'aws-amplify/storage';
 import { getUrl } from 'aws-amplify/storage';
 import { downloadData } from 'aws-amplify/storage'
-import { parse } from 'dotenv'
+// import { MantineProvider, createTheme, MantineColorsTuple } from '@mantine/core';
+
+// const myColor: MantineColorsTuple = [
+//   '#fdeded',
+//   '#f4d8d7',
+//   '#edaca9',
+//   '#e77d79',
+//   '#e25750',
+//   '#e04036',
+//   '#df3429',
+//   '#c6281e',
+//   '#b12119',
+//   '#9b1713'
+// ];
+
+// const theme = createTheme({
+//   colors: {
+//     myColor,
+//   }
+// });
+
 
 Amplify.configure(amplifyconfig)
 let rtsCodes = [];
@@ -16,6 +36,7 @@ let capShows = [];
 let parShows = [];
 let upcomingCapShows = [];
 let upcomingParShows = [];
+let announcements = [];
 
 let capPosters = [];
 let parPosters = [];
@@ -29,6 +50,7 @@ let parPostersReceived = false;
 let upcomingCapPostersReceived = false;
 let upcomingParPostersReceived = false;
 let bannerPostersReceived = false;
+let announcementsReceived = false;
 
 
 
@@ -37,8 +59,9 @@ const fetchData = async () => {
   parShows = await parseParXML(await fetchParXML());
   upcomingCapShows = await parseUpcomingCapXML(await fetchCapXML());
   upcomingParShows = await parseUpcomingParXML(await fetchParXML());
+  announcements = await parseAnnouncementsXML(await fetchAnnouncements());
   bannerPosters = await fetchBannerPosters(rtsCodes);
-  if (capPostersReceived && parPostersReceived && upcomingCapPostersReceived && upcomingParPostersReceived && bannerPostersReceived) {
+  if (capPostersReceived && parPostersReceived && upcomingCapPostersReceived && upcomingParPostersReceived && bannerPostersReceived && announcementsReceived) {
     root();
   } else {
     wait();
@@ -222,6 +245,41 @@ const parseUpcomingParXML = async (xml) => {
   return extractedTitles[0];
 };
 
+const fetchAnnouncements = async () => {
+  let announcementsXML = '';
+  try {
+    const getAnnouncementsXML = await downloadData({
+      path: 'public/announcements/announcements.xml',
+    }).result;
+    announcementsXML = await getAnnouncementsXML.body.text();
+    return announcementsXML;
+  } catch (error) {
+    console.log('Error : ', error);
+  }
+  announcementsReceived = true;
+};
+
+const parseAnnouncementsXML = async (xml) => {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xml, 'text/xml');
+  const announcementNodes = xmlDoc.getElementsByTagName('announcement');
+
+  const parsedAnnouncements = [];
+  for (let i = 0; i < announcementNodes.length; i++) {
+    const announcementNode = announcementNodes[i];
+    const active = announcementNode.getElementsByTagName('active')[0].textContent;
+    const id = announcementNode.getElementsByTagName('id')[0].textContent;
+    const date = announcementNode.getElementsByTagName('data')[0].textContent;
+    const title = announcementNode.getElementsByTagName('title')[0].textContent;
+    const description = announcementNode.getElementsByTagName('description')[0].textContent;
+    const image = announcementNode.getElementsByTagName('image')[0].textContent;
+    parsedAnnouncements.push({ id, active, date, title, description, image });
+  }
+
+  announcementsReceived = true;
+  return parsedAnnouncements;
+};
+
 const fetchCapPosters = async (rcodes) => {
   for (let rcode of rcodes) {
     try {
@@ -296,7 +354,8 @@ const fetchBannerPosters = async (rcodes) => {
 };
 
 const wait = () => {
-  if (capPostersReceived && parPostersReceived && upcomingCapPostersReceived && upcomingParPostersReceived && bannerPostersReceived) {
+
+  if (capPostersReceived && parPostersReceived && upcomingCapPostersReceived && upcomingParPostersReceived && bannerPostersReceived && announcementsReceived) {
     root();
   } else {
     setTimeout(wait, 1000);
@@ -304,7 +363,6 @@ const wait = () => {
 }
 
 fetchData();
-console.log(capPosters);
 
 const root = () => {
   ReactDOM.createRoot(document.getElementById('root')).render(
@@ -319,6 +377,7 @@ const root = () => {
         upcomingCapPosters={upcomingCapPosters}
         upcomingParPosters={upcomingParPosters}
         bannerPosters={bannerPosters}
+        announcements={announcements}
         dataReceived={capPostersReceived && parPostersReceived && upcomingCapPostersReceived && upcomingParPostersReceived && bannerPostersReceived}
       />
     </React.StrictMode>,

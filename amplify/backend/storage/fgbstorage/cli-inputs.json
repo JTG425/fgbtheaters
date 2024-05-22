@@ -1,7 +1,7 @@
 {
-  "resourceName": "fgbs3storage",
-  "policyUUID": "e9a68004",
-  "bucketName": "fgbs3storageaws",
+  "resourceName": "fgbstorage",
+  "policyUUID": "71578276",
+  "bucketName": "fgbtheatersstorage",
   "storageAccess": "authAndGuest",
   "guestAccess": [
     "READ"

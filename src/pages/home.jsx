@@ -35,6 +35,7 @@ function Home(props) {
   const bannerPosters = props.bannerPosters;
   const upcomingCapShows = props.upcomingCapShows;
   const upcomingCapPosters = props.upcomingCapPosters;
+  const announcements = props.announcements;
 
 
 
@@ -54,6 +55,10 @@ function Home(props) {
   };
 
 
+  useEffect(() => {
+    console.log("announcement", announcements);
+  }, [announcements]);
+
   return (
     <motion.div
       className="page-container"
@@ -61,7 +66,7 @@ function Home(props) {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <SlideShow bannerPosters={bannerPosters} />
+      <SlideShow images={capPosters} />
       <SelectTheater selected={selectedTheater} setSelected={handleTheaterChange} />
       <motion.div
         className="datePickerContainer"
