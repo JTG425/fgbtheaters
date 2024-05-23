@@ -12,6 +12,8 @@ const convertToStandardTime = (militaryTime) => {
   return `${hours}:${minutes} ${suffix}`;
 };
 
+
+
 function MovieCard(props) {
   const date = props.date;
   const capShows = props.capShows;
@@ -19,9 +21,13 @@ function MovieCard(props) {
   const [shows, setShows] = useState(capShows);
   const selectedTheater = props.selectedTheater;
 
+
+
   useEffect(() => {
     setShows(selectedTheater === "capitol" ? capShows : parShows);
   }, [selectedTheater]);
+
+  console.log(shows);
 
   return (
     <motion.div className="movieCard">

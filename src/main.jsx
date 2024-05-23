@@ -10,24 +10,6 @@ import { getUrl } from 'aws-amplify/storage';
 import { downloadData } from 'aws-amplify/storage'
 // import { MantineProvider, createTheme, MantineColorsTuple } from '@mantine/core';
 
-// const myColor: MantineColorsTuple = [
-//   '#fdeded',
-//   '#f4d8d7',
-//   '#edaca9',
-//   '#e77d79',
-//   '#e25750',
-//   '#e04036',
-//   '#df3429',
-//   '#c6281e',
-//   '#b12119',
-//   '#9b1713'
-// ];
-
-// const theme = createTheme({
-//   colors: {
-//     myColor,
-//   }
-// });
 
 
 Amplify.configure(amplifyconfig)
@@ -69,6 +51,7 @@ const fetchCapShows = async () => {
   try {
     const getCapShows = await downloadData({
       path: 'public/schedule/RTS_Schedule_Capitol.json',
+      CacheControl: "no-cache, no-store, must-revalidate"
     }).result;
     const json = await (getCapShows.body).text();
     capRecieved = true;
@@ -83,6 +66,7 @@ const fetchParShows = async () => {
   try {
     const getParShows = await downloadData({
       path: 'public/schedule/RTS_Schedule_Paramount.json',
+      CacheControl: "no-cache, no-store, must-revalidate"
     }).result;
     var json = await (getParShows.body).text();
     parRecieved = true;
