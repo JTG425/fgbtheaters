@@ -21,9 +21,11 @@ const SliderToggle = ({ selected, setSelected }) => {
     const textVariants = {
         selected: {
             color: "#ffffff",
+            fontSize: "1rem",
         },
         notselected: {
             color: "#292323",
+            fontSize: "0.75rem",
         },
         hovered: {
             color: "#958484",
@@ -51,10 +53,13 @@ const SliderToggle = ({ selected, setSelected }) => {
                     className="button-text"
                     initial='selected'
                     whileHover='hovered'
+                ><motion.p
+                    initial='selected'
+                    whileHover='hovered'
                     animate={selected === 'capitol' ? 'selected' : 'notselected'}
                     variants={textVariants}
                     transition={{ duration: 0.25 }}
-                ><p>Capitol Theater</p></motion.span>
+                >Capitol Theater</motion.p></motion.span>
             </button>
             <button
                 className="toggle-button"
@@ -70,7 +75,14 @@ const SliderToggle = ({ selected, setSelected }) => {
                     variants={textVariants}
                     transition={{ duration: 0.25 }}
                 >
-                    <p>Paramount Theater</p></motion.span>
+                    <motion.p
+                        initial='notselected'
+                        whileHover='hovered'
+                        animate={selected === 'paramount' ? 'selected' : 'notselected'}
+                        variants={textVariants}
+                        transition={{ duration: 0.25 }}
+
+                    >Paramount Theater</motion.p></motion.span>
             </button>
             <div
                 className="toggle-slider"
