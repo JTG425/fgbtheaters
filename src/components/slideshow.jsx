@@ -12,7 +12,7 @@ const SlideShow = (props) => {
       image: "https://placehold.co/1000x1500/png",
       background: "https://i.imgur.com/CjufWqq.png",
       title: "Welcome To FGB Theaters",
-      text: "Located in Central Vermont"
+      text: "Central Vermont"
     },
     {
       image: "https://placehold.co/1000x1500/png",

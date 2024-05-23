@@ -4,7 +4,8 @@ import SlideShow from "../components/slideshow";
 import MovieCard from "../components/movieCard";
 import SelectTheater from "../components/selecttheater";
 import { CiCalendarDate } from "react-icons/ci";
-import DatePicker from "../components/datepicker";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { motion } from "framer-motion";
 
 const handleDateFormating = (date) => {
@@ -27,6 +28,7 @@ function Home(props) {
   const capShows = props.capShows;
   const parShows = props.parShows;
   const dataReceived = props.dataReceived;
+  const [startDate, setStartDate] = useState(new Date());
   const [date, setDate] = useState(handleDateFormating(new Date()));
   const [selectedTheater, setSelectedTheater] = useState("capitol");
 
@@ -36,7 +38,8 @@ function Home(props) {
   }
 
   const handleDateChange = (date) => {
-    setDate(date);
+    setStartDate(date);
+    setDate(handleDateFormating(date));
   }
 
   return (
@@ -50,7 +53,15 @@ function Home(props) {
       <div className="home-container">
         <h2>Today's Showings</h2>
         <SelectTheater selected={selectedTheater} setSelected={handleTheaterChange} />
-        {/* <DatePicker setDate={handleDateChange} /> */}
+        <div className="datepicker-container">
+          <ReactDatePicker
+            className="datepicker"
+            minDate={new Date()}
+            showIcon
+            selected={startDate}
+            onChange={(date) => handleDateChange(date)}
+          />
+        </div>
         <div className="movies-container">
           {dataReceived && selectedTheater === "capitol" ? (
             <MovieCard

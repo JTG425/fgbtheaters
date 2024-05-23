@@ -34,6 +34,7 @@ function Admin({ signOut, user }) {
   const [showUpdateFailed, setShowUpdateFailed] = useState(false);
 
 
+
   const handleEditClick = (announcement) => {
     setCurrentAnnouncement(announcement);
     setIsEditing(true);
@@ -62,6 +63,7 @@ function Admin({ signOut, user }) {
     setAnnouncements(updatedAnnouncements);
     handleUpdateXMLandPushToS3(updatedAnnouncements);
   };
+
 
 
   const handleAddNewAnnouncement = async (e) => {
@@ -99,6 +101,10 @@ function Admin({ signOut, user }) {
       }
     }
   };
+
+  const handleUpdateJSONandPushToS3 = async (updatedAnnouncements) => {
+
+  }
 
   useEffect(() => {
     if (showUpdateSuccess) {
