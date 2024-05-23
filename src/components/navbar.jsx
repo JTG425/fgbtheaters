@@ -3,8 +3,7 @@ import { BrowserRouter, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "../componentstyles/navbar.css";
 import DropDown from "./dropdown";
-import fullNavLogo from '../assets/fullnav.svg';
-import smallNavLogo from '../assets/smallNav.svg';
+import NavLogo from '../assets/navLogo.svg';
 
 function NavBar(props) {
   const pages = props.pages;
@@ -29,95 +28,88 @@ function NavBar(props) {
 
   return (
     <div className="nav-container">
-      <motion.img
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
-        src={fullNavLogo}
-        alt="nav-logo"
-        className="full-nav-logo"
-      />
+      <div className="nav-content-container">
+        <motion.img
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.98 }}
+          src={NavLogo}
+          alt="nav-logo"
+          className="nav-logo"
+        />
+        <DropDown />
+        <div className="nav-buttons-container">
+          <Link to="/">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="nav-button"
+              initial="NotSelected"
+              animate={page === "Home" ? "Selected" : "NotSelected"}
+              variants={buttonVariants}
+              transition={{ duration: 0.2 }}
+              onClick={() => {
+                handlePageChange("Home");
+                setPage("Home");
+              }}
+            >
+              <p>Home</p>
+            </motion.button>
+          </Link>
 
-      <motion.img
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
-        src={smallNavLogo}
-        alt="nav-logo"
-        className="small-nav-logo"
-      />
+          <Link to="/tickets">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="nav-button"
+              initial="NotSelected"
+              animate={page === "Tickets" ? "Selected" : "NotSelected"}
+              variants={buttonVariants}
+              transition={{ duration: 0.2 }}
+              onClick={() => {
+                handlePageChange("Tickets");
+                setPage("Tickets");
+              }}
+            >
+              <p>Buy Tickets</p>
+            </motion.button>
+          </Link>
 
-      <DropDown />
-      <div className="nav-buttons-container">
-        <Link to="/">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="nav-button"
-            initial="NotSelected"
-            animate={page === "Home" ? "Selected" : "NotSelected"}
-            variants={buttonVariants}
-            transition={{ duration: 0.2 }}
-            onClick={() => {
-              handlePageChange("Home");
-              setPage("Home");
-            }}
-          >
-            <p>Home</p>
-          </motion.button>
-        </Link>
+          <Link to="/locations">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="nav-button"
+              initial="NotSelected"
+              animate={page === "Locations" ? "Selected" : "NotSelected"}
+              variants={buttonVariants}
+              transition={{ duration: 0.2 }}
+              onClick={() => {
+                handlePageChange("Locations");
+                setPage("Locations");
+              }}
+            >
+              <p>Locations</p>
+            </motion.button>
+          </Link>
 
-        <Link to="/tickets">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="nav-button"
-            initial="NotSelected"
-            animate={page === "Tickets" ? "Selected" : "NotSelected"}
-            variants={buttonVariants}
-            transition={{ duration: 0.2 }}
-            onClick={() => {
-              handlePageChange("Tickets");
-              setPage("Tickets");
-            }}
-          >
-            <p>Buy Tickets</p>
-          </motion.button>
-        </Link>
-
-        <Link to="/locations">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="nav-button"
-            initial="NotSelected"
-            animate={page === "Locations" ? "Selected" : "NotSelected"}
-            variants={buttonVariants}
-            transition={{ duration: 0.2 }}
-            onClick={() => {
-              handlePageChange("Locations");
-              setPage("Locations");
-            }}
-          >
-            <p>Locations</p>
-          </motion.button>
-        </Link>
-
-        <Link to="/about">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="nav-button"
-            initial="NotSelected"
-            animate={page === "About" ? "Selected" : "NotSelected"}
-            variants={buttonVariants}
-            transition={{ duration: 0.2 }}
-            onClick={() => {
-              handlePageChange("About");
-              setPage("About");
-            }}
-          >
-            <p>About</p>
-          </motion.button>
-        </Link>
+          <Link to="/about">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="nav-button"
+              initial="NotSelected"
+              animate={page === "About" ? "Selected" : "NotSelected"}
+              variants={buttonVariants}
+              transition={{ duration: 0.2 }}
+              onClick={() => {
+                handlePageChange("About");
+                setPage("About");
+              }}
+            >
+              <p>About</p>
+            </motion.button>
+          </Link>
+        </div>
       </div>
     </div>
   );

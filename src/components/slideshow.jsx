@@ -5,86 +5,71 @@ import '../componentstyles/slideshow.css'; // Import CSS for additional styles
 
 const SlideShow = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = props.images;
-  const imageRefs = useRef([]);
+  // const images = props.images;
 
-  const animateSlideShow = () => {
-    const slideWidth = imageRefs.current[0]?.offsetWidth || 0;
-    imageRefs.current.forEach((img, index) => {
-      const offset = (index - currentImageIndex) * (slideWidth + 50) - 100;
-      anime({
-        targets: img,
-        translateX: offset,
-        opacity: index === currentImageIndex ? 1 : 0.75,
-        easing: "easeOutExpo",
-        duration: 900,
-      });
-    });
-    anime({
-      targets: ".slide-active",
+  const tempSlides = [
+    {
+      image: "https://placehold.co/1000x1500/png",
+      background: "https://i.imgur.com/CjufWqq.png",
+      title: "Welcome To FGB Theaters",
+      text: "Located in Central Vermont"
+    },
+    {
+      image: "https://placehold.co/1000x1500/png",
+      background: "https://placehold.co/1500x800/png",
+      title: "Welcome To FGB Theaters",
+      text: "Located in Central Vermont"
+    },
+  ];
+
+  const imageVariants = {
+    hidden: {
+      opacity: 0,
+      display: 'none',
+    },
+    visible: {
       opacity: 1,
-      zindex: 1,
-      easing: "easeOutExpo",
-      duration: 900,
-    });
-    anime({
-      targets: ".slide-left",
-      opacity: 0.5,
-      easing: "easeOutExpo",
-      duration: 900,
-    });
-    anime({
-      targets: ".slide-right",
-      opacity: 0.5,
-      easing: "easeOutExpo",
-      duration: 900,
-    });
+      display: 'flex'
+    },
+
   };
 
-  const handleImageChange = (direction) => {
-    if (direction === 'left') {
-      setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-    } else {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }
-  };
-
-  useEffect(() => {
-    animateSlideShow();
-  }, [currentImageIndex]);
 
   return (
     <div className="slideshow-container">
       <div className="slideshow">
-        {images.map((image, index) => {
-          return (
+        {tempSlides.map((slide, index) => (
+          <motion.div
+            key={`slideshow-div-${index}`}
+            initial='hidden'
+            animate={currentImageIndex === index ? 'visible' : 'hidden'}
+            variants={imageVariants}
+          >
             <img
-              key={index}
-              ref={(el) => (imageRefs.current[index] = el)}
-              src={image.posterData.url.href}
-              alt={`banner-${index}`}
-              className={`slide-${index === currentImageIndex ? 'active' : index < currentImageIndex ? 'left' : 'right'}`}
+              key={`slide-background-${index}`}
+              className='slide-background'
+              src={slide.background}
             />
-          );
-        })}
-        <div className='slideshow-controls'>
-          <motion.button
-            className="slideshow-button"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => handleImageChange('left')}
-          >
-            &#10094;
-          </motion.button>
-          <motion.button
-            className="slideshow-button"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => handleImageChange('right')}
-          >
-            &#10095;
-          </motion.button>
-        </div>
+            <div key={`slideshow-content-div-${index}`} className='slideshow-content'>
+              <img
+                key={`slide-image-${index}`}
+                className='slide-image'
+                src={slide.image}
+
+              />
+              <div key={`slide-text-div-${index}`} className='slide-text-div'>
+                <h2
+                  key={`slide-title-${index}`}
+                  className='slide-title'
+                >{slide.title}</h2>
+                <p
+                  key={`slide-text-${index}`}
+                  className='slide-text'
+                >{slide.text}</p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );

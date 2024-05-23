@@ -120,7 +120,7 @@
 
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 600px) {
     .film {
         display: flex;
         flex-direction: column;
@@ -146,13 +146,7 @@
         font-weight: bold;
     }
 
-
-    .poster {
-        width: fit-content;
-        height: auto;
-    }
-
-    .poster img {
+    .film img {
         width: 50vw;
     }
 

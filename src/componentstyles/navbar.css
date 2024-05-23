@@ -1,18 +1,27 @@
 .nav-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background: var(--foreground);
     padding: 0.5rem 1rem;
     border: none;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-bottom-left-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
+    border-radius: 0;
     width: 100vw;
     position: fixed;
     top: 0;
     z-index: 2;
+}
+
+.nav-content-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
 .nav-buttons-container {
@@ -20,7 +29,7 @@
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    margin-right: 25px;
+    margin-right: 0;
     gap: 20px;
 }
 
@@ -79,7 +88,7 @@
     display: none;
     position: relative;
     z-index: 1;
-    right: 15px;
+    right: 0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -92,24 +101,14 @@
     cursor: pointer;
 }
 
-.full-nav-logo {
-    display: none;
+.nav-logo {
+    position: relative;
+    left: 0;
+    width: auto;
+    height: 50px;
+    z-index: 5;
 }
 
-.small-nav-logo {
-    position: relative;
-    width: 75px;
-    margin-left: 25px;
-    height: auto;
-    z-index: 1;
-    left: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
 
 
 
@@ -122,13 +121,14 @@
         justify-content: space-between;
         width: 100%;
         background: var(--foreground);
+        z-index: 5;
     }
 
     .show-dropdown-button {
         display: flex;
         color: var(--copy);
         margin-left: 0;
-        right: 20px;
+        right: 0;
         padding: 0;
         width: 50px;
         height: 50px;
@@ -150,30 +150,10 @@
         padding-bottom: 1rem;
         width: 100%;
         background: var(--foreground);
-        border-bottom-left-radius: var(--border-radius);
-        border-bottom-right-radius: var(--border-radius);
+        border-radius: 0;
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .full-nav-logo {
-        display: flex;
-        position: relative;
-        width: 50vw;
-        margin: 0;
-        height: auto;
-        z-index: 1;
-        left: 10px;
-        padding: 0.5rem 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .small-nav-logo {
-        display: none;
-    }
 
     .dropdown-button {
         display: flex;

@@ -27,57 +27,12 @@ function Admin({ signOut, user }) {
     title: '',
     description: '',
     image: null,
+    background: null,
   });
   const [currentAnnouncement, setCurrentAnnouncement] = useState(null);
   const [showUpdateSuccess, setShowUpdateSuccess] = useState(false);
   const [showUpdateFailed, setShowUpdateFailed] = useState(false);
 
-  useEffect(() => {
-    const fetchAnnouncements = async () => {
-      let announcementsXML = '';
-      try {
-        const getAnnouncementsXML = await downloadData({
-          path: 'public/announcements/announcements.xml',
-        }).result;
-        announcementsXML = await getAnnouncementsXML.body.text();
-        parseAnnouncementsXML(announcementsXML);
-      } catch (error) {
-        console.log('Error : ', error);
-      }
-    };
-
-    const parseAnnouncementsXML = async (xml) => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xml, 'text/xml');
-      const announcementNodes = xmlDoc.getElementsByTagName('announcement');
-
-      const parsedAnnouncements = [];
-      for (let i = 0; i < announcementNodes.length; i++) {
-        const announcementNode = announcementNodes[i];
-        const active = announcementNode.getElementsByTagName('active')[0].textContent;
-        const id = announcementNode.getElementsByTagName('id')[0].textContent;
-        const date = announcementNode.getElementsByTagName('data')[0].textContent;
-        const title = announcementNode.getElementsByTagName('title')[0].textContent;
-        const description = announcementNode.getElementsByTagName('description')[0].textContent;
-        const image = await fetchImage(i);
-        parsedAnnouncements.push({ id, active, date, title, description, image });
-      }
-      setAnnouncements(parsedAnnouncements);
-    }
-
-    const fetchImage = async (id) => {
-      try {
-        const url = await getUrl({
-          path: `public/announcements/images/${id}.jpg`
-        });
-        return url.url.href;
-      } catch (error) {
-        console.log('Error fetching image:', error);
-      }
-    };
-
-    fetchAnnouncements();
-  }, []);
 
   const handleEditClick = (announcement) => {
     setCurrentAnnouncement(announcement);
@@ -108,84 +63,10 @@ function Admin({ signOut, user }) {
     handleUpdateXMLandPushToS3(updatedAnnouncements);
   };
 
+
   const handleAddNewAnnouncement = async (e) => {
-    e.preventDefault();
-    const id = (announcements.length).toString();
-    const date = handleDateFormating(new Date());
-    const { title, description } = newAnnouncement;
-    const active = "True";
-    const image = await uploadImage(newAnnouncement.image, id);
-    const newAnn = { id, date, title, description, image, active };
-    const updatedAnnouncements = [...announcements, newAnn];
-    setAnnouncements(updatedAnnouncements);
-    setAddingNewAnnouncement(false);
-    setNewAnnouncement({ date: '', title: '', description: '', image: null });
-
-    handleUpdateXMLandPushToS3(updatedAnnouncements);
-  };
-
-  const uploadImage = async (file, id) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        try {
-          const result = await uploadData({
-            path: `public/announcements/images/${id}.jpg`,
-            data: reader.result,
-            contentType: 'image/jpeg',
-          });
-          const url = await getUrl({
-            path: `public/announcements/images/${id}.jpg`
-          });
-          resolve(url.url.href);
-        } catch (error) {
-          console.log('Error uploading image:', error);
-          reject(error);
-        }
-      };
-      reader.onerror = (error) => {
-        console.log('Error reading file:', error);
-        reject(error);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
-  const handleUpdateXMLandPushToS3 = async (updated) => {
-    // Update XML file with new announcement data and push to S3
-    const convertToXML = (announcements) => {
-      const xmlHeader = '<?xml version="1.0"?>';
-      const rootStart = '<announcements>';
-      const rootEnd = '</announcements>';
-
-      const announcementNodes = announcements.map((announcement, index) => `
-        <announcement>
-          <active>${announcement.active}</active>
-          <id>${index}</id>
-          <data>${announcement.date}</data>
-          <title>${announcement.title}</title>
-          <description>${announcement.description}</description>
-          <image>${index}</image>
-        </announcement>
-      `).join('');
-
-      return `${xmlHeader}${rootStart}${announcementNodes}${rootEnd}`;
-    };
-
-    const xmlContent = convertToXML(updated);
-
-    try {
-      const result = await uploadData({
-        path: 'public/announcements/announcements.xml',
-        data: xmlContent,
-        contentType: 'application/xml',
-      }).result;
-      setShowUpdateSuccess(true);
-    } catch (error) {
-      console.log('Error updating XML in S3:', error);
-      alert('Failed to update announcements.');
-    }
-  };
+    return null;
+  }
 
   const handleDelete = (announcement) => {
     // Delete announcement

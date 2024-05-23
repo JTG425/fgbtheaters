@@ -5,7 +5,6 @@
     overflow: hidden;
     height: fit-content;
     margin-top: 10px;
-
     width: 100%;
 }
 
@@ -163,7 +162,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        width: 90%;
+        width: fit-content;
     }
 
     .par-map {
@@ -171,7 +170,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        width: 90%;
+        width: fit-content;
     }
 
     .call {
