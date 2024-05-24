@@ -9,6 +9,7 @@ import Home from "./pages/home";
 import Tickets from "./pages/tickets";
 import Locations from "./pages/locations";
 import About from "./pages/about";
+import RentalsAndGifts from "./pages/rentalsandgiftcards";
 import Admin from "./pages/admin";
 
 
@@ -116,6 +117,14 @@ function App(props) {
                 }
               />
               <Route
+                path="/gifts"
+                element={
+                  <PageWrapper>
+                    <RentalsAndGifts />
+                  </PageWrapper>
+                }
+              />
+              <Route
                 path="/about"
                 element={
                   <PageWrapper>
@@ -123,6 +132,7 @@ function App(props) {
                   </PageWrapper>
                 }
               />
+
               <Route
                 path="/admin"
                 element={

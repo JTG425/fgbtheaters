@@ -70,22 +70,28 @@
 }
 
 .showtime-button {
-    border: 1px solid var(--border);
+    border: none;
     border-radius: 0.375rem;
-    padding: 0.5rem;
+    padding: 0;
     cursor: pointer;
     font-size: 1rem;
     background: var(--secondary);
     color: var(--foreground);
     box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
     width: 200px;
+    height: fit-content;
+    outline: 2px solid var(--primary);
 }
 
 .showtime-button p {
+    padding: 0.75rem 1rem;
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    height: 100%;
     margin: 0;
     font-size: 1rem;
     font-weight: bold;
-    color: var(--foreground);
 }
 
 .film {
@@ -152,10 +158,7 @@
 
     .showtime-button {
         width: 50vw;
-        height: 50px;
+        height: fit-content;
         font-size: 1rem;
-        background: var(--secondary);
-        color: var(--foreground);
-        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
     }
 }

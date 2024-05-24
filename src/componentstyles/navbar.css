@@ -34,20 +34,27 @@
 }
 
 .nav-button {
-    background: var(--background);
+    position: relative;
+    background: var(--foreground);
+    width: 85px;
     color: var(--copy);
-    padding: 0.5rem 1rem;
+    padding: 0;
     border: none;
+    outline: none;
     border-radius: var(--border-radius);
+    font-size: 0.75rem;
     cursor: pointer;
-    font-size: 1.25rem;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
 }
 
+
+
 .nav-button p {
-    margin: 0;
+    margin: 0.5rem 1rem;
     text-decoration: none;
     color: var(--copy);
-    font-size: 1rem;
+    font-size: 0.75rem;
     font-weight: bold;
 }
 
@@ -112,7 +119,10 @@
 
 
 
-@media screen and (max-width: 768px) {
+
+
+
+@media screen and (max-width: 650px) {
     .nav-buttons-container {
         display: none;
     }

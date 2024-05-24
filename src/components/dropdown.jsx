@@ -9,6 +9,7 @@ import { FiHome } from "react-icons/fi";
 import { FaTicketSimple } from "react-icons/fa6";
 import { FaMapLocation } from "react-icons/fa6";
 import { FaRegCircleQuestion } from "react-icons/fa6";
+import { FaGift } from "react-icons/fa";
 
 function DropDown(props) {
   const [showDropdown, setShowDropdown] = useState(true);
@@ -18,7 +19,7 @@ function DropDown(props) {
       case true:
         anime({
           targets: ".dropdown",
-          translateY: [300, 860],
+          translateY: [300, 855],
           opacity: [0, 1],
           easing: "easeOutExpo",
           duration: 900,
@@ -40,7 +41,7 @@ function DropDown(props) {
       case false:
         anime({
           targets: ".dropdown",
-          translateY: [860, 300],
+          translateY: [855, 300],
           opacity: [1, 0],
           easing: "easeOutExpo",
           delay: 200,
@@ -102,6 +103,13 @@ function DropDown(props) {
           <button className="dropdown-button" onClick={() => toggleDropdown()}>
             <FaMapLocation className="icon" />
             <p>Our Locations</p>
+          </button>
+        </Link>
+
+        <Link to="/gifts">
+          <button className="dropdown-button" onClick={() => toggleDropdown()}>
+            <FaGift className="icon" />
+            <p>Gift Cards and Rentals</p>
           </button>
         </Link>
 

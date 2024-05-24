@@ -89,7 +89,7 @@ function Locations(props) {
             <motion.a href="tel:18024790078" className="call">
               <span className="call-content">
                 <FaPhoneAlt />
-                <p>(802)-229-0343</p>
+                <p>(802)-479-0078</p>
               </span>
             </motion.a>
           </motion.div>
