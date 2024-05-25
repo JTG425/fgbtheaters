@@ -35,7 +35,7 @@
 
 .nav-button {
     position: relative;
-    background: var(--foreground);
+    background: transparent;
     width: 85px;
     color: var(--copy);
     padding: 0;

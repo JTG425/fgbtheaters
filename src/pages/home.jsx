@@ -6,6 +6,7 @@ import SelectTheater from "../components/selecttheater";
 import { CiCalendarDate } from "react-icons/ci";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import '../componentstyles/datepicker.css';
 import { motion } from "framer-motion";
 
 const handleDateFormating = (date) => {

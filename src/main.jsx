@@ -41,7 +41,6 @@ const start = async () => {
       capShows = JSON.parse(cap_json);
       parShows = JSON.parse(par_json);
       announcements = JSON.parse(announcements_json);
-      console.log(announcements)
       root();
     } else {
       wait();
@@ -94,10 +93,10 @@ const start = async () => {
 
 
   const wait = () => {
-    if (capRecieved && parRecieved) {
+    if (capRecieved && parRecieved && annRecieved) {
       root();
     } else {
-      setTimeout(wait, 1000);
+      setTimeout(wait, 100);
     }
   }
 
@@ -107,7 +106,6 @@ const start = async () => {
 const refreshToken = async () => {
   try {
     const currentSession = await fetchAuthSession({ forceRefresh: true });
-    console.log('Token Refreshed', currentSession);
     start();
   } catch (e) {
     console.log('Unable to refresh Token', e);

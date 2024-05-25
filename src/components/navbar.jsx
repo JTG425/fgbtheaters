@@ -11,8 +11,6 @@ function NavBar(props) {
   const [page, setPage] = useState("Home");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const [hovered, setHovered] = useState("None");
-
   const buttonVariants = {
     Selected: {
       background: "#940303",
@@ -25,12 +23,6 @@ function NavBar(props) {
       boxShadow: "0px 0px 10px 0px rgba(148, 3, 3, 0.75)",
     },
   };
-
-
-  // color: "#fd9999",
-  // fontWeight: "bold",
-
-  // Not Selected:       color: "#292323",
 
   const textVariants = {
     selected: {
@@ -46,9 +38,13 @@ function NavBar(props) {
     },
   };
 
-
   const handleShowDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+
+  const handleButtonClick = (pageName) => {
+    handlePageChange(pageName);
+    setPage(pageName);
   };
 
   return (
@@ -61,31 +57,24 @@ function NavBar(props) {
             src={NavLogo}
             alt="nav-logo"
             className="nav-logo"
-            onClick={() => {
-              handlePageChange("Home");
-              setPage("Home");
-            }}
+            onClick={() => handleButtonClick("Home")}
           />
         </Link>
         <DropDown />
         <div className="nav-buttons-container">
-          <Link to="/">
+          <Link to = "/" >
             <motion.button
               whileHover="hovered"
               whileTap={{ scale: 0.9 }}
               className="nav-button"
-              initial="NotSelected"
+              initial={page === "Home" ? "Selected" : "NotSelected"}
               animate={page === "Home" ? "Selected" : "NotSelected"}
               variants={buttonVariants}
               transition={{ duration: 0.25 }}
-              onClick={() => {
-                handlePageChange("Home");
-                setPage("Home");
-              }}
+              onClick={() => handleButtonClick("Home")}
             >
-
               <motion.p
-                initial="selected"
+                initial={page === "Home" ? "selected" : "notselected"}
                 whileHover="hovered"
                 animate={page === "Home" ? "selected" : "notselected"}
                 variants={textVariants}
@@ -95,107 +84,30 @@ function NavBar(props) {
               </motion.p>
             </motion.button>
           </Link>
-
-          <Link to="/tickets">
-            <motion.button
-              whileHover="hovered"
-              whileTap={{ scale: 0.9 }}
-              className="nav-button"
-              initial="NotSelected"
-              animate={page === "Tickets" ? "Selected" : "NotSelected"}
-              variants={buttonVariants}
-              transition={{ duration: 0.25 }}
-              onClick={() => {
-                handlePageChange("Tickets");
-                setPage("Tickets");
-              }}
-            >
-              <motion.p
-                initial="selected"
+          {["Tickets", "Locations", "Gifts", "About"].map((pageName) => (
+            <Link to={`/${pageName.toLowerCase()}`} key={pageName}>
+              <motion.button
                 whileHover="hovered"
-                animate={page === "Tickets" ? "selected" : "notselected"}
-                variants={textVariants}
-                transition={{ duration: 0.3 }}
+                whileTap={{ scale: 0.9 }}
+                className="nav-button"
+                initial={page === pageName ? "Selected" : "NotSelected"}
+                animate={page === pageName ? "Selected" : "NotSelected"}
+                variants={buttonVariants}
+                transition={{ duration: 0.25 }}
+                onClick={() => handleButtonClick(pageName)}
               >
-                Tickets
-              </motion.p>
-            </motion.button>
-          </Link>
-          <Link to="/locations">
-            <motion.button
-              whileHover="hovered"
-              whileTap={{ scale: 0.9 }}
-              className="nav-button"
-              initial="NotSelected"
-              animate={page === "Locations" ? "Selected" : "NotSelected"}
-              variants={buttonVariants}
-              transition={{ duration: 0.25 }}
-              onClick={() => {
-                handlePageChange("Locations");
-                setPage("Locations");
-              }}
-            >
-              <motion.p
-                initial="selected"
-                whileHover="hovered"
-                animate={page === "Locations" ? "selected" : "notselected"}
-                variants={textVariants}
-                transition={{ duration: 0.3 }}
-              >
-                Locations
-              </motion.p>
-            </motion.button>
-          </Link>
-          <Link to="/gifts">
-            <motion.button
-              whileHover="hovered"
-              whileTap={{ scale: 0.9 }}
-              className="nav-button"
-              initial="NotSelected"
-              animate={page === "Gifts" ? "Selected" : "NotSelected"}
-              variants={buttonVariants}
-              transition={{ duration: 0.25 }}
-              onClick={() => {
-                handlePageChange("Gifts");
-                setPage("Gifts");
-              }}
-            >
-              <motion.p
-                initial="selected"
-                whileHover="hovered"
-                animate={page === "Gifts" ? "selected" : "notselected"}
-                variants={textVariants}
-                transition={{ duration: 0.3 }}
-              >
-                Gifts
-              </motion.p>
-            </motion.button>
-          </Link>
-          <Link to="/about">
-            <motion.button
-              whileHover="hovered"
-              whileTap={{ scale: 0.9 }}
-              className="nav-button"
-              initial="NotSelected"
-              animate={page === "About" ? "Selected" : "NotSelected"}
-              variants={buttonVariants}
-              transition={{ duration: 0.25 }}
-              onClick={() => {
-                handlePageChange("About");
-                setPage("About");
-              }}
-            >
-              <motion.p
-                initial="selected"
-                whileHover="hovered"
-                animate={page === "About" ? "selected" : "notselected"}
-                variants={textVariants}
-                transition={{ duration: 0.3 }}
-              >
-                About
-              </motion.p>
-            </motion.button>
-          </Link>
+                <motion.p
+                  initial={page === pageName ? "selected" : "notselected"}
+                  whileHover="hovered"
+                  animate={page === pageName ? "selected" : "notselected"}
+                  variants={textVariants}
+                  transition={{ duration: 0.3 }}
+                >
+                  {pageName}
+                </motion.p>
+              </motion.button>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

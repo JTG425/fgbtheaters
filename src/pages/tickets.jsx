@@ -67,7 +67,7 @@ function Tickets() {
             name="terms"
             onChange={handleCheckbox}
           />
-          <label for="terms">
+          <label htmlFor="terms">
             I have read and agree to the terms and conditions
           </label>
         </motion.div>
