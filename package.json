@@ -15,7 +15,7 @@
     "@types/mapbox-gl": "^3.1.0",
     "@vis.gl/react-google-maps": "^1.0.0",
     "animejs": "^3.2.2",
-    "aws-amplify": "^6.3.2",
+    "aws-amplify": "^6.3.4",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.1.9",
     "mapbox-gl": "^3.3.0",

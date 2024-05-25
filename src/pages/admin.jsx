@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../pagestyles/admin.css";
-import { motion } from "framer-motion";
-import AddSlideShow from "../admincomponents/addSlideshow";
-import { Authenticator, Button, Heading } from '@aws-amplify/ui-react';
+import { Authenticator } from '@aws-amplify/ui-react';
+import { uploadData } from "aws-amplify/storage";
 import '@aws-amplify/ui-react/styles.css';
-import { downloadData, uploadData, getUrl } from 'aws-amplify/storage';
 import { MdEdit } from "react-icons/md";
-import { IoCloseCircleOutline, IoExit } from "react-icons/io5";
-import { FaCheckCircle } from "react-icons/fa";
+import { IoIosClose } from "react-icons/io";
 
-const handleDateFormating = (date) => {
+const handleDateFormatting = (date) => {
   const day = date.getDate();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -18,270 +15,218 @@ const handleDateFormating = (date) => {
   return `${year}-${formattedDay}-${formattedMonth}`;
 };
 
-function Admin({ signOut, user }) {
-  const [announcements, setAnnouncements] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [addingNewAnnouncement, setAddingNewAnnouncement] = useState(false);
-  const [newAnnouncement, setNewAnnouncement] = useState({
-    date: '',
-    title: '',
-    description: '',
-    image: null,
-    background: null,
-  });
-  const [currentAnnouncement, setCurrentAnnouncement] = useState(null);
-  const [showUpdateSuccess, setShowUpdateSuccess] = useState(false);
-  const [showUpdateFailed, setShowUpdateFailed] = useState(false);
+function EditAnnouncement({ announcement, index, updateAnnouncement }) {
+  const [editedAnnouncement, setEditedAnnouncement] = useState(announcement);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedAnnouncement = { ...editedAnnouncement };
 
+    if (typeof editedAnnouncement.Image === 'object') {
+      const imageKey = await uploadImageAndGenerateURL(editedAnnouncement.Image, `public/announcements/images/${index}.png`);
+      updatedAnnouncement.Image = imageKey;
+    }
 
-  const handleEditClick = (announcement) => {
-    setCurrentAnnouncement(announcement);
-    setIsEditing(true);
+    if (typeof editedAnnouncement.Background === 'object') {
+      const backgroundKey = await uploadImageAndGenerateURL(editedAnnouncement.Background, `public/announcements/backgrounds/${index}.png`);
+      updatedAnnouncement.Background = backgroundKey;
+    }
+
+    updateAnnouncement(updatedAnnouncement, index);
   };
 
-  const handleSaveEdit = async (e) => {
-    e.preventDefault();
-    setIsEditing(false);
-    if (currentAnnouncement.image instanceof File) {
-      currentAnnouncement.image = await uploadImage(currentAnnouncement.image, currentAnnouncement.id);
+  const uploadImageAndGenerateURL = async (file, path) => {
+    try {
+      const result = await uploadData({
+        path: path,
+        data: file
+      }).result;
+      return `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/${path}`;
+    } catch (error) {
+      console.log('Error uploading file: ', error);
     }
-    const updatedAnnouncements = announcements.map(ann =>
-      ann.id === currentAnnouncement.id ? currentAnnouncement : ann
+  };
+
+  return (
+    <div className="blur-background">
+      <div className='add-edit-announcement-container'>
+        <span className="add-edit-header">
+          <h3>Edit Announcement</h3>
+          <button className="close-edit" onClick={() => updateAnnouncement(null)}><IoIosClose /></button>
+        </span>
+        <form className="edit-add-form" onSubmit={handleSubmit}>
+          <input className="edit-add-form-title" type="text" id="title" name="title" value={editedAnnouncement.Title} onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Title: e.target.value })} />
+          <textarea className="edit-add-form-description" id="description" name="description" value={editedAnnouncement.Description} onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Description: e.target.value })} />
+          <label htmlFor="image">Image</label>
+          <input className="edit-add-form-image" type="file" id="image" name="image" onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Image: e.target.files[0] })} />
+          <label htmlFor="background">Background Image</label>
+          <input className="edit-add-form-background" type="file" id="background" name="background" onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Background: e.target.files[0] })} />
+          <button className="edit-add-form-submit" type="submit">Edit Announcement</button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function AddAnnouncement({ addAnnouncement, nextId }) {
+  const [newAnnouncement, setNewAnnouncement] = useState({
+    id: nextId,
+    Date: handleDateFormatting(new Date()),
+    Title: '',
+    Description: '',
+    Image: '',
+    Background: ''
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const announcementWithURLs = { ...newAnnouncement };
+
+    if (announcementWithURLs.Image) {
+      const imageKey = await uploadImageAndGenerateURL(announcementWithURLs.Image, `public/announcements/images/${announcementWithURLs.id}.png`);
+      announcementWithURLs.Image = imageKey;
+    }
+
+    if (announcementWithURLs.Background) {
+      const backgroundKey = await uploadImageAndGenerateURL(announcementWithURLs.Background, `public/announcements/backgrounds/${announcementWithURLs.id}.png`);
+      announcementWithURLs.Background = backgroundKey;
+    }
+
+    addAnnouncement(announcementWithURLs);
+  };
+
+  const uploadImageAndGenerateURL = async (file, path) => {
+    try {
+      const result = await uploadData({
+        path: path,
+        data: file
+      }).result;
+      return `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/${path}`;
+    } catch (error) {
+      console.log('Error uploading file: ', error);
+    }
+  };
+
+  return (
+    <div className="blur-background">
+      <div className='add-edit-announcement-container'>
+        <span className="add-edit-header">
+          <h3>Add Announcement</h3>
+          <button className="close-edit" onClick={() => addAnnouncement(false)}><IoIosClose /></button>
+        </span>
+        <form onSubmit={handleSubmit}>
+          <input className="edit-add-form-title" type="text" id="title" name="title" value={newAnnouncement.Title} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Title: e.target.value })} />
+          <textarea className="edit-add-form-description" id="description" name="description" value={newAnnouncement.Description} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Description: e.target.value })} />
+          <input className="edit-add-form-image" type="file" id="image" name="image" onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Image: e.target.files[0] })} />
+          <input className="edit-add-form-background" type="file" id="background" name="background" onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Background: e.target.files[0] })} />
+          <button type="submit" onClick={() => addAnnouncement(false)}>Add Announcement</button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function Admin(props) {
+  const { signOut, user, announcements: initialAnnouncements } = props;
+  const [announcements, setAnnouncements] = useState(initialAnnouncements);
+  const [addNewAnnouncement, setAddNewAnnouncement] = useState(false);
+  const [editAnnouncement, setEditAnnouncement] = useState(null);
+
+  const addAnnouncement = (newAnnouncement) => {
+    const updatedAnnouncements = [...announcements, newAnnouncement];
+    setAnnouncements(updatedAnnouncements);
+    uploadAnnouncements(updatedAnnouncements);
+    setAddNewAnnouncement(false);
+  };
+
+  const updateAnnouncement = (updatedAnnouncement, index) => {
+    const updatedAnnouncements = announcements.map((ann, i) =>
+      i === index ? updatedAnnouncement : ann
     );
     setAnnouncements(updatedAnnouncements);
-    setCurrentAnnouncement(null);
-    handleUpdateXMLandPushToS3(updatedAnnouncements);
+    uploadAnnouncements(updatedAnnouncements);
+    setEditAnnouncement(null);
   };
 
-  const handleToggle = (announcement) => {
-    // Toggle announcement active status
-    announcement.active = announcement.active === "True" ? "False" : "True";
-    const updatedAnnouncements = [...announcements];
-    const index = updatedAnnouncements.findIndex(a => a.id === announcement.id);
-    updatedAnnouncements[index] = announcement;
-    setAnnouncements(updatedAnnouncements);
-    handleUpdateXMLandPushToS3(updatedAnnouncements);
+  const convertToJSON = (announcements) => {
+    const jsonAnnouncements = announcements.map((announcement) => {
+      const { id, Date, Title, Description, Image, Background } = announcement;
+      return { id, Date, Title, Description, Image, Background };
+    });
+    return JSON.stringify(jsonAnnouncements);
   };
 
-
-
-  const handleAddNewAnnouncement = async (e) => {
-    return null;
-  }
-
-  const handleDelete = (announcement) => {
-    // Delete announcement
-    const updatedAnnouncements = announcements.filter(a => a.id !== announcement.id);
-    setAnnouncements(updatedAnnouncements);
-    handleUpdateXMLandPushToS3(updatedAnnouncements);
-  };
-
-  const activeButtonVariants = {
-    true: {
-      backgroundColor: "#00ff00",
-      color: "#000",
-    },
-    false: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
+  const uploadAnnouncements = async (announcements) => {
+    try {
+      await uploadData({
+        path: 'public/announcements/announcements.json',
+        data: convertToJSON(announcements)
+      }).result;
+      console.log("Uploaded announcements");
+    } catch (error) {
+      console.log('Error uploading announcements: ', error);
     }
   };
-
-  const uploadVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 1,
-      }
-    }
-  };
-
-  const handleUpdateJSONandPushToS3 = async (updatedAnnouncements) => {
-
-  }
-
-  useEffect(() => {
-    if (showUpdateSuccess) {
-      setTimeout(() => {
-        setShowUpdateSuccess(false);
-      }, 3000);
-    }
-  }, [showUpdateSuccess]);
 
   return (
     <div className="page-container">
       <div className="admin-console">
-        <motion.div
-          className="update"
-          initial="hidden"
-          animate={showUpdateSuccess ? "visible" : "hidden"}
-          variants={uploadVariants}
-        >
-          <FaCheckCircle color="green" className="check-icon" />
-          Announcements Updated
-        </motion.div>
-
-        <motion.div
-          className="update"
-          initial="hidden"
-          animate={showUpdateFailed ? "visible" : "hidden"}
-          variants={uploadVariants}
-        >
-          <IoCloseCircleOutline color="red" className="check-icon" />
-          Announcements Failed To Update
-        </motion.div>
-
         <span className="admin-console-header">
           <h2>Hello {user.username}</h2>
           <button className="sign-out-button" onClick={signOut}>Sign out</button>
         </span>
-        <h2>Announcements</h2>
-        <span className="announcement-legend">
-          <motion.button
-            className="add-announcement-button"
-            onClick={() => setAddingNewAnnouncement(true)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >Add New Announcement</motion.button>
-        </span>
-        {addingNewAnnouncement && (
-          <div className="blurred-background">
-            <div className="edit-announcement-container">
-              <h3>Add New Announcement</h3>
-              <form onSubmit={handleAddNewAnnouncement}>
-                <span className="edit-add-header">
-                  <label>
-                    <input
-                      placeholder="Title"
-                      type="text"
-                      value={newAnnouncement.title}
-                      onChange={(e) => setNewAnnouncement({ ...newAnnouncement, title: e.target.value })}
-                    />
-                  </label>
-                </span>
-                <label>
-                  <textarea
-                    placeholder="Description"
-                    value={newAnnouncement.description}
-                    onChange={(e) => setNewAnnouncement({ ...newAnnouncement, description: e.target.value })}
-                  ></textarea>
-                </label>
-                <label>
-                  <input
-                    type="file"
-                    accept=".jpg"
-                    onChange={(e) => setNewAnnouncement({ ...newAnnouncement, image: e.target.files[0] })}
-                  />
-                </label>
-                <div className="edit-add-buttons">
-                  <Button type="submit">Submit</Button>
-                  <Button type="button" onClick={() => setAddingNewAnnouncement(false)}>Cancel</Button>
-                </div>
-              </form>
-            </div>
-          </div>
+        <button className="add-announcement-button" onClick={() => setAddNewAnnouncement(!addNewAnnouncement)}>Add Announcement</button>
+        {addNewAnnouncement && (
+          <AddAnnouncement addAnnouncement={addAnnouncement} nextId={announcements.length} />
         )}
-        <div className="announcement-table-container">
-          <table>
+        {editAnnouncement !== null && (
+          <EditAnnouncement
+            announcement={announcements[editAnnouncement]}
+            index={editAnnouncement}
+            updateAnnouncement={updateAnnouncement}
+          />
+        )}
+        <div className="admin-table-container">
+          <table className="admin-table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Active</th>
-                <th>Actions</th>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Image</th>
+                <th scope="col">Background</th>
+                <th scope="col">Edit</th>
               </tr>
             </thead>
             <tbody>
-              {announcements.map((announcement) => (
-                <tr key={announcement.id}>
-                  <td>{announcement.date}</td>
-                  <td>{announcement.title}</td>
-                  <td>{announcement.description}</td>
+              {announcements.map((announcement, index) => (
+                <tr key={index}>
+                  <td>{handleDateFormatting(new Date(announcement.Date))}</td>
+                  <td>{announcement.Title}</td>
+                  <td>{announcement.Description}</td>
+                  <td><img src={announcement.Image} alt={announcement.Title} /></td>
+                  <td><img src={announcement.Background} alt={announcement.Title} /></td>
                   <td>
-                    <img className="table-image" src={announcement.image} alt="announcement" />
-                  </td>
-                  <td>
-                    <motion.button
-                      className="active-button"
-                      onClick={() => handleToggle(announcement)}
-                      variants={activeButtonVariants}
-                      animate={announcement.active === "True" ? "true" : "false"}
+                    <button
+                      onClick={() => setEditAnnouncement(index)}
                     >
-                      {announcement.active}
-                    </motion.button>
-                  </td>
-                  <td>
-                    <span className="action-buttons">
-                      <button onClick={() => handleEditClick(announcement)}>
-                        <MdEdit className="edit-button" />
-                        Edit
-                      </button>
-                      <button onClick={() => handleDelete(announcement)}>
-                        <IoCloseCircleOutline className="delete-button" />
-                        Delete
-                      </button>
-                    </span>
+                      <MdEdit />
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        {isEditing && (
-          <div className="blurred-background">
-            <div className="edit-announcement-container">
-              <h3>Edit Announcement</h3>
-              <form onSubmit={handleSaveEdit}>
-                <span className="edit-add-header">
-                  <label>
-                    <input
-                      type="text"
-                      value={currentAnnouncement.title}
-                      onChange={(e) => setCurrentAnnouncement({ ...currentAnnouncement, title: e.target.value })}
-                    />
-                  </label>
-                </span>
-                <label>
-                  <textarea
-                    value={currentAnnouncement.description}
-                    onChange={(e) => setCurrentAnnouncement({ ...currentAnnouncement, description: e.target.value })}
-                  ></textarea>
-                </label>
-                <label>
-                  <input
-                    accept=".jpg"
-                    type="file"
-                    onChange={(e) => setCurrentAnnouncement({ ...currentAnnouncement, image: e.target.files[0] })}
-                  />
-                </label>
-                <div className="edit-add-buttons">
-                  <Button type="submit">Submit</Button>
-                  <Button type="button" onClick={() => setIsEditing(false)}>Cancel</Button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        <h2>Slideshow Content</h2>
-        <AddSlideShow />
       </div>
     </div>
   );
 }
 
-export default function AdminWithAuth() {
+export default function AdminWithAuth(props) {
   return (
     <Authenticator className="sign-in" hideSignUp={true}>
-      {({ signOut, user }) => <Admin signOut={signOut} user={user} />}
+      {({ signOut, user }) => <Admin announcements={props.announcements} signOut={signOut} user={user} />}
     </Authenticator>
   );
 }

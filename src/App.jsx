@@ -13,17 +13,13 @@ import RentalsAndGifts from "./pages/rentalsandgiftcards";
 import Admin from "./pages/admin";
 
 
+
 function App(props) {
   const [currentPage, setCurrentPage] = useState("Home");
   const capitolShows = props.capShows;
-  const capPosters = props.capPosters;
   const paramountShows = props.parShows;
-  const parPosters = props.parPosters;
-  const bannerPosters = props.bannerPosters;
   const upcomingCapShows = props.upcomingCapShows;
-  const upcomingCapPosters = props.upcomingCapPosters;
   const upcomingParShows = props.upcomingParShows;
-  const upcomingParPosters = props.upcomingParPosters;
   const announcements = props.announcements;
   const dataReceived = props.dataReceived;
 
@@ -64,6 +60,8 @@ function App(props) {
     }
   }
 
+
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -87,13 +85,8 @@ function App(props) {
                     <Home
                       capShows={capitolShows}
                       parShows={paramountShows}
-                      bannerPosters={bannerPosters}
-                      capPosters={capPosters}
-                      parPosters={parPosters}
                       upcomingCapShows={upcomingCapShows}
                       upcomingParShows={upcomingParShows}
-                      upcomingCapPosters={upcomingCapPosters}
-                      upcomingParPosters={upcomingParPosters}
                       announcements={announcements}
                       dataReceived={dataReceived}
                     />
@@ -137,7 +130,7 @@ function App(props) {
                 path="/admin"
                 element={
                   <PageWrapper>
-                    <Admin />
+                    <Admin announcements={announcements} />
                   </PageWrapper>
                 }
               />

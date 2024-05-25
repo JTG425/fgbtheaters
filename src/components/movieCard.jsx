@@ -12,21 +12,8 @@ const convertToStandardTime = (militaryTime) => {
   return `${hours}:${minutes} ${suffix}`;
 };
 
-const isTimePassed = (showTime) => {
-  const now = new Date();
-  const [currentHours, currentMinutes] = [
-    now.getHours(),
-    now.getMinutes(),
-  ];
 
-  const showHours = parseInt(showTime.slice(0, 2));
-  const showMinutes = parseInt(showTime.slice(2));
 
-  return (
-    showHours < currentHours ||
-    (showHours === currentHours && showMinutes <= currentMinutes)
-  );
-};
 
 function MovieCard(props) {
   const date = props.date;
@@ -35,11 +22,12 @@ function MovieCard(props) {
   const [shows, setShows] = useState(capShows);
   const selectedTheater = props.selectedTheater;
 
+
+
   useEffect(() => {
     setShows(selectedTheater === "capitol" ? capShows : parShows);
   }, [selectedTheater]);
 
-  console.log(shows);
 
   const buttonVariants = {
     hovered: {
@@ -52,7 +40,7 @@ function MovieCard(props) {
       color: "#940303",
       boxShadow: "0px 0px 0px 0px rgba(148, 3, 3, 0)",
     },
-  };
+  }
 
   return (
     <motion.div className="movieCard">
@@ -78,7 +66,7 @@ function MovieCard(props) {
                   <p>{film.length} minutes</p>
                 </span>
                 {film.show
-                  .filter((show) => show.date === date && !isTimePassed(show.time))
+                  .filter((show) => show.date === date)
                   .map((show, showIndex) => (
                     <div className="showtime" key={showIndex}>
                       <a
@@ -94,7 +82,10 @@ function MovieCard(props) {
                           whileTap={{ scale: 0.98 }}
                           variants={buttonVariants}
                         >
-                          <motion.p whileHover={{ color: "#fbfbfb" }}>
+                          <motion.p
+                            whileHover={{ color: "#fbfbfb" }}
+
+                          >
                             {convertToStandardTime(show.time)}
                             {show.Subtitles === "True" ? " (Subtitles)" : ""}
                           </motion.p>
