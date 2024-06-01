@@ -5,72 +5,73 @@ import '../componentstyles/slideshow.css'; // Import CSS for additional styles
 
 const SlideShow = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // const images = props.images;
+  const slideshow = props.slideshow;
 
-  const tempSlides = [
-    {
-      image: "https://placehold.co/1000x1500/png",
-      background: "https://i.imgur.com/CjufWqq.png",
-      title: "Welcome To FGB Theaters",
-      text: "Some Type of Tagline!!!"
-    },
-    {
-      image: "https://placehold.co/1000x1500/png",
-      background: "https://placehold.co/1500x800/png",
-      title: "Welcome To FGB Theaters",
-      text: "Located in Central Vermont"
-    },
-  ];
 
   const imageVariants = {
     hidden: {
       opacity: 0,
-      display: 'none',
+      zIndex: 0,
     },
     visible: {
       opacity: 1,
-      display: 'flex'
+      zIndex: 2,
     },
 
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((currentImageIndex + 1) % slideshow.length);
+    }, 20000);
+    return () => clearInterval(interval);
+  }, [currentImageIndex]);
+
 
   return (
     <div className="slideshow-container">
-      <div className="slideshow">
-        {tempSlides.map((slide, index) => (
+        {slideshow.map((slide, index) => (
           <motion.div
+            className='slideshow-div'
             key={`slideshow-div-${index}`}
             initial='hidden'
             animate={currentImageIndex === index ? 'visible' : 'hidden'}
             variants={imageVariants}
+            style={{
+              backgroundImage: `url(${slide.Background})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
           >
-            <img
-              key={`slide-background-${index}`}
-              className='slide-background'
-              src={slide.background}
-            />
-            <div key={`slideshow-content-div-${index}`} className='slideshow-content'>
-              <img
+            <div key={`slideshow-content-${index}`} className='slideshow-content-container'>
+            <div key={`slideshow-content-${index}`} className='slideshow-content'>
+              {slide.Image === '' ? null : (
+                <img
+                  key={`slide-image-${index}`}
+                  className='slide-image'
+                  src={slide.Image}
+                />
+              )}
+              {/* <img
                 key={`slide-image-${index}`}
                 className='slide-image'
-                src={slide.image}
+                src={slide.Image}
 
-              />
+              /> */}
               <div key={`slide-text-div-${index}`} className='slide-text-div'>
                 <h2
                   key={`slide-title-${index}`}
                   className='slide-title'
-                >{slide.title}</h2>
+                >{slide.Title}</h2>
                 <p
                   key={`slide-text-${index}`}
                   className='slide-text'
-                >{slide.text}</p>
+                >{slide.Description}</p>
               </div>
-            </div>
+              </div>
+              </div>
           </motion.div>
         ))}
-      </div>
     </div>
   );
 };

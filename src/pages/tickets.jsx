@@ -12,7 +12,13 @@ function Tickets() {
   return (
     <div className="page-container">
       <motion.div className="tickets">
-        <h2>Buy Tickets Online</h2>
+      <h2>Buy Tickets Online</h2>
+      <div className="prices">
+        <h3>Prices</h3>
+
+      </div>
+        <div className="tickets-terms">
+
         <h3>Print At Home</h3>
         <p>
           When you purchase your tickets online, a confirmation email will be
@@ -59,6 +65,7 @@ function Tickets() {
             </b>
           </span>
         </p>
+        </div>
 
         <motion.div className="terms">
           <motion.input

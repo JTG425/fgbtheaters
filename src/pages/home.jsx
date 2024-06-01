@@ -1,12 +1,11 @@
 import { useState, Suspense, useEffect } from "react";
 import "../pagestyles/home.css";
+import "../componentstyles/datepicker.css";
 import SlideShow from "../components/slideshow";
 import MovieCard from "../components/movieCard";
 import SelectTheater from "../components/selecttheater";
 import { CiCalendarDate } from "react-icons/ci";
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import '../componentstyles/datepicker.css';
+import { Day, DayPicker } from "react-day-picker";
 import { motion } from "framer-motion";
 
 const handleDateFormating = (date) => {
@@ -25,23 +24,43 @@ const handleDisplayDate = (date) => {
   return `${month} / ${day} / ${year}`;
 };
 
+const handleUpcomingDate = (date) => {
+  const year = date.slice(0, 4);
+  const month = date.slice(4, 6);
+  const day = date.slice(6, 8);
+  return `${month} / ${day} / ${year}`;
+
+};
+
 function Home(props) {
   const capShows = props.capShows;
   const parShows = props.parShows;
+  const upcoming = props.upcomingShows;
   const dataReceived = props.dataReceived;
+  const slideshow = props.slideshow;
   const [startDate, setStartDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [date, setDate] = useState(handleDateFormating(new Date()));
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedTheater, setSelectedTheater] = useState("capitol");
+  const [testingDate, setTestingDate] = useState(new Date());
 
 
   const handleTheaterChange = (theater) => {
     setSelectedTheater(theater);
   }
 
-  const handleDateChange = (date) => {
-    setStartDate(date);
-    setDate(handleDateFormating(date));
-  }
+  const handleDateChange = (newDate) => {
+    if (newDate === undefined) {
+      setShowDatePicker(false);
+      return;
+    } else {
+    setSelectedDate(newDate);
+    setDate(handleDateFormating(newDate));
+    setShowDatePicker(false);
+    }
+  };
+
 
   return (
     <motion.div
@@ -50,18 +69,33 @@ function Home(props) {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <SlideShow />
+      <SlideShow slideshow={slideshow} />
       <div className="home-container">
         <h2>Today's Showings</h2>
         <SelectTheater selected={selectedTheater} setSelected={handleTheaterChange} />
         <div className="datepicker-container">
-          <ReactDatePicker
-            className="datepicker"
-            minDate={new Date()}
-            showIcon
-            selected={startDate}
-            onChange={(date) => handleDateChange(date)}
-          />
+          <motion.button
+            className="date-button"
+            onClick={() => setShowDatePicker(!showDatePicker)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            >
+              {date ? handleDisplayDate(date) : "Select Date"}
+            <CiCalendarDate className="date-icon" />
+            </motion.button>
+            {showDatePicker && (
+              <div className="date-picker-container">
+              <div className="blur-date-background" onClick={() => setShowDatePicker(false)} />
+              <DayPicker
+                showOutsideDays={true}
+                fixedWeeks={true}
+                className="date-picker"
+                mode="single"
+                selected={selectedDate}
+                onSelect={(date) => handleDateChange(date)}
+              />
+              </div>
+            )}
         </div>
         <div className="movies-container">
           {dataReceived && selectedTheater === "capitol" ? (
@@ -81,6 +115,21 @@ function Home(props) {
           )}
         </div>
       </div>
+    <div className="upcoming-shows-container">
+      <h2>Upcoming Shows</h2>
+      <div className="upcoming-shows">
+            {upcoming.map((show, index) => (
+              <div key={`upcoming-cap-show-${index}`} className="upcoming-show">
+                <a href={show.website} target="_blank">
+                  <h4>{show.name}</h4>
+                </a>
+                <p>{show.rating}</p>
+                <img src={show.poster} />
+                <p>{handleUpcomingDate(show.StartDate)}</p>
+              </div>
+            ))}
+            </div>
+    </div>
     </motion.div>
   );
 }

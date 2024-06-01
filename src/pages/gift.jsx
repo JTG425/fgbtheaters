@@ -19,7 +19,7 @@ function Gift(props) {
         <div className='rentals-and-gifts-container'>
             <div className='gift-card'>
                 <img
-                    src="https://placehold.co/500x325/png"
+                    src="https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/gifts/MovieCard.png"
                     alt="gift card"
                 />
                 <span className='gift-card-text'>
@@ -52,7 +52,7 @@ function Gift(props) {
             </div>
             <div className='gift-card'>
                 <img
-                    src="https://placehold.co/500x325/png"
+                    src="https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/gifts/VIPcard.png"
                     alt="gift card"
                 />
                 <span className='gift-card-text'>

@@ -18,10 +18,10 @@ function App(props) {
   const [currentPage, setCurrentPage] = useState("Home");
   const capitolShows = props.capShows;
   const paramountShows = props.parShows;
-  const upcomingCapShows = props.upcomingCapShows;
-  const upcomingParShows = props.upcomingParShows;
-  const announcements = props.announcements;
+  const upcomingShows = props.upcomingShows;
+  const slideshow = props.slideshow;
   const dataReceived = props.dataReceived;
+  const currentShows = props.currentShows;
 
 
   const pages = [
@@ -85,9 +85,8 @@ function App(props) {
                     <Home
                       capShows={capitolShows}
                       parShows={paramountShows}
-                      upcomingCapShows={upcomingCapShows}
-                      upcomingParShows={upcomingParShows}
-                      announcements={announcements}
+                      upcomingShows={upcomingShows}
+                      slideshow={slideshow}
                       dataReceived={dataReceived}
                     />
                   </PageWrapper>
@@ -130,7 +129,7 @@ function App(props) {
                 path="/admin"
                 element={
                   <PageWrapper>
-                    <Admin announcements={announcements} />
+                    <Admin slideshow={slideshow} currentShows={currentShows} />
                   </PageWrapper>
                 }
               />
@@ -139,10 +138,10 @@ function App(props) {
         </AnimatePresence>
         <div className='footer'>
           <span className="footer-socials">
-            <SocialIcon key='facebook-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.facebook.com" target='_blank' />
+            <SocialIcon key='facebook-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.facebook.com/pages/Capitol%20Theatre/113448652021770/" target='_blank' />
             <SocialIcon key='insta-icon' bgColor='#f1efef' fgColor='#292323' url="https://www.instagram.com/fgbtheaters/" target='_blank' />
           </span>
-          <p><sup>©</sup>Copyright 2018 FGB Theaters</p>
+          <p><sup>©</sup>Copyright 2024 FGB Theaters</p>
         </div>
       </BrowserRouter>
     </div>

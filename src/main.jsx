@@ -15,17 +15,21 @@ Amplify.configure(amplifyconfig)
 
 let cap_json = [];
 let par_json = [];
-let announcements_json = [];
+let slideshow_json = [];
+let upcoming_json = [];
+let current_json = [];
 
 let capShows = [];
 let parShows = [];
-let upcomingCapShows = [];
-let upcomingParShows = [];
-let announcements = [];
+let slideshow = [];
+let upcomingShows = [];
+let currentShows = [];
 
 let capRecieved = false;
 let parRecieved = false;
-let annRecieved = false;
+let slideRecieved = false;
+let upcomingRecieved = false;
+let currentRecieved = false;
 
 
 
@@ -36,11 +40,15 @@ const start = async () => {
   const fetchData = async () => {
     cap_json = await fetchCapShows();
     par_json = await fetchParShows();
-    announcements_json = await fetchAnnouncements();
-    if (capRecieved && parRecieved && annRecieved) {
+    slideshow_json = await fetchSlideshow();
+    upcoming_json = await fetchUpShows();
+    current_json = await fetchCurrShows();
+    if (capRecieved && parRecieved && slideRecieved && upcomingRecieved && currentRecieved) {
       capShows = JSON.parse(cap_json);
       parShows = JSON.parse(par_json);
-      announcements = JSON.parse(announcements_json);
+      slideshow = JSON.parse(slideshow_json);
+      currentShows = JSON.parse(current_json);
+      upcomingShows = JSON.parse(upcoming_json);
       root();
     } else {
       wait();
@@ -51,7 +59,7 @@ const start = async () => {
     try {
       const getCapShows = await downloadData({
         path: 'public/schedule/RTS_Schedule_Capitol.json',
-        CacheControl: "no-cache, no-store, must-revalidate"
+        CacheControl: "must-revalidate"
       }).result;
       const json = await (getCapShows.body).text();
       capRecieved = true;
@@ -66,7 +74,7 @@ const start = async () => {
     try {
       const getParShows = await downloadData({
         path: 'public/schedule/RTS_Schedule_Paramount.json',
-        CacheControl: "no-cache, no-store, must-revalidate"
+        CacheControl: "must-revalidate"
       }).result;
       var json = await (getParShows.body).text();
       parRecieved = true;
@@ -76,27 +84,54 @@ const start = async () => {
     }
   };
 
-  const fetchAnnouncements = async () => {
-    let annData = []
+  const fetchSlideshow = async () => {
+    let slideData = []
     try {
-      const getAnnouncements = await downloadData({
-        path: 'public/announcements/announcements.json',
-        CacheControl: "no-cache, no-store, must-revalidate"
+      const getSlideshow = await downloadData({
+        path: 'public/slideshow/slideshow.json',
+        CacheControl: "must-revalidate"
       }).result;
-      var json = await (getAnnouncements.body).text();
-      annRecieved = true;
+      var json = await (getSlideshow.body).text();
+      slideRecieved = true;
       return json;
     } catch (error) {
       console.log('Error : ', error);
     }
   };
 
+  const fetchUpShows = async () => {
+    try {
+      const getUpShows = await downloadData({
+        path: 'public/schedule/Upcoming.json',
+        CacheControl: "must-revalidate"
+      }).result;
+      const json = await (getUpShows.body).text();
+      upcomingRecieved = true;
+      return json;
+    } catch (error) {
+      console.log('Error : ', error);
+    }
+  };
+
+  const fetchCurrShows = async () => {
+    try {
+      const getCurrShows = await downloadData({
+        path: 'public/schedule/FGB_Current_Movies.json',
+        CacheControl: "no-cache"
+      }).result;
+      const json = await (getCurrShows.body).text();
+      currentRecieved = true;
+      return json;
+    } catch (error) {
+      console.log('Error : ', error);
+    }
+  };
 
   const wait = () => {
-    if (capRecieved && parRecieved && annRecieved) {
+    if (capRecieved && parRecieved && slideRecieved && upcomingRecieved && currentRecieved) {
       root();
     } else {
-      setTimeout(wait, 100);
+      setTimeout(wait, 1);
     }
   }
 
@@ -119,8 +154,10 @@ const root = () => {
       <App
         capShows={capShows}
         parShows={parShows}
-        announcements={announcements}
-        dataReceived={capRecieved && parRecieved && annRecieved}
+        slideshow={slideshow}
+        upcomingShows={upcomingShows}
+        currentShows={currentShows}
+        dataReceived={capRecieved && parRecieved && slideRecieved && upcomingRecieved && currentRecieved}
       />
     </React.StrictMode>,
   )

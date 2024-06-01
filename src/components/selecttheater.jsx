@@ -21,7 +21,7 @@ const SliderToggle = ({ selected, setSelected }) => {
     const textVariants = {
         selected: {
             color: "#ffffff",
-            fontSize: "1rem",
+            fontSize: "0.80rem",
         },
         notselected: {
             color: "#292323",

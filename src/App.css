@@ -26,6 +26,7 @@
 
   --border-radius: 0.375rem;
   --box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
 }
 
 body {
@@ -129,7 +130,7 @@ a {
   max-width: 1000px;
   height: fit-content;
   background: var(--background);
-  margin-top: 350px;
+  margin-top: 400px;
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
   scrollbar-width: none;
@@ -187,8 +188,8 @@ a {
 }
 
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 600px) {
   .home-container {
-    margin-top: 650px;
+    margin-top: 25px;
   }
 }

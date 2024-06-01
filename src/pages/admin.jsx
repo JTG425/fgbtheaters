@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../pagestyles/admin.css";
 import { Authenticator } from '@aws-amplify/ui-react';
 import { uploadData } from "aws-amplify/storage";
+import { remove } from 'aws-amplify/storage';
 import '@aws-amplify/ui-react/styles.css';
 import { MdEdit } from "react-icons/md";
-import { IoIosClose } from "react-icons/io";
+import CurrentShows from "../admincomponents/currentShows";
+import { IoCloseCircle } from "react-icons/io5";
+import { FaCheckCircle } from "react-icons/fa";
+import {motion} from 'framer-motion';
 
 const handleDateFormatting = (date) => {
   const day = date.getDate();
@@ -15,158 +19,242 @@ const handleDateFormatting = (date) => {
   return `${year}-${formattedDay}-${formattedMonth}`;
 };
 
-function EditAnnouncement({ announcement, index, updateAnnouncement }) {
-  const [editedAnnouncement, setEditedAnnouncement] = useState(announcement);
+const uploadImage = async (file, id) => {
+  try {
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const result = reader.result;
+      await uploadData({
+        path: `public/slideshow/images/image-${id}.png`,
+        data: result,
+        contentType: file.type
+      });
+      console.log("Uploaded slideshow image");
+    };
+    reader.readAsArrayBuffer(file);
+  } catch (error) {
+    console.log('Error uploading slideshow image: ', error);
+  }
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const updatedAnnouncement = { ...editedAnnouncement };
+const uploadBackground = async (file, id) => {
+  try {
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const result = reader.result;
+      await uploadData({
+        path: `public/slideshow/backgrounds/background-${id}.png`,
+        data: result,
+        contentType: file.type
+      });
+      console.log("Uploaded slideshow background");
+    };
+    reader.readAsArrayBuffer(file);
+  } catch (error) {
+    console.log('Error uploading slideshow background: ', error);
+  }
+};
 
-    if (typeof editedAnnouncement.Image === 'object') {
-      const imageKey = await uploadImageAndGenerateURL(editedAnnouncement.Image, `public/announcements/images/${index}.png`);
-      updatedAnnouncement.Image = imageKey;
-    }
 
-    if (typeof editedAnnouncement.Background === 'object') {
-      const backgroundKey = await uploadImageAndGenerateURL(editedAnnouncement.Background, `public/announcements/backgrounds/${index}.png`);
-      updatedAnnouncement.Background = backgroundKey;
-    }
 
-    updateAnnouncement(updatedAnnouncement, index);
-  };
-
-  const uploadImageAndGenerateURL = async (file, path) => {
-    try {
-      const result = await uploadData({
-        path: path,
-        data: file
-      }).result;
-      return `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/${path}`;
-    } catch (error) {
-      console.log('Error uploading file: ', error);
-    }
-  };
-
-  return (
-    <div className="blur-background">
-      <div className='add-edit-announcement-container'>
-        <span className="add-edit-header">
-          <h3>Edit Announcement</h3>
-          <button className="close-edit" onClick={() => updateAnnouncement(null)}><IoIosClose /></button>
-        </span>
-        <form className="edit-add-form" onSubmit={handleSubmit}>
-          <input className="edit-add-form-title" type="text" id="title" name="title" value={editedAnnouncement.Title} onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Title: e.target.value })} />
-          <textarea className="edit-add-form-description" id="description" name="description" value={editedAnnouncement.Description} onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Description: e.target.value })} />
-          <label htmlFor="image">Image</label>
-          <input className="edit-add-form-image" type="file" id="image" name="image" onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Image: e.target.files[0] })} />
-          <label htmlFor="background">Background Image</label>
-          <input className="edit-add-form-background" type="file" id="background" name="background" onChange={(e) => setEditedAnnouncement({ ...editedAnnouncement, Background: e.target.files[0] })} />
-          <button className="edit-add-form-submit" type="submit">Edit Announcement</button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-function AddAnnouncement({ addAnnouncement, nextId }) {
-  const [newAnnouncement, setNewAnnouncement] = useState({
-    id: nextId,
-    Date: handleDateFormatting(new Date()),
-    Title: '',
-    Description: '',
-    Image: '',
-    Background: ''
+function AddSlideshow({ addSlideshow, length }) {
+  const [newSlideshow, setNewSlideshow] = useState({
+      Date: '',
+      Title: '',
+      Description: '',
+      Image: '',
+      Background: ''
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const announcementWithURLs = { ...newAnnouncement };
+    const id = length;
+  
+    if (newSlideshow.Image) {
+      await uploadImage(newSlideshow.Image, id);
+      newSlideshow.Image = `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/slideshow/images/image-${id}.png`;
+    }
+    if (newSlideshow.Background) {
+      await uploadBackground(newSlideshow.Background, id);
+      newSlideshow.Background = `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/slideshow/backgrounds/background-${id}.png`;
+    }
+  
+    addSlideshow(newSlideshow);
+  };
+  
+  return (
+    <div className='add-edit-announcement-container'>
+      <h3>Add Slideshow</h3>
+      <form onSubmit={handleSubmit}>
+        <span className="in-line">
+          <label htmlFor="date">Date:</label>
+          <input className="date-input" type="date" id="date" name="date" value={newSlideshow.Date} onChange={(e) => setNewSlideshow({ ...newSlideshow, Date: e.target.value })} />
+        </span>
+        <span className="in-line">
+          <label htmlFor="title">Title:</label>
+          <input className="title-input" type="text" id="title" name="title" value={newSlideshow.Title} onChange={(e) => setNewSlideshow({ ...newSlideshow, Title: e.target.value })} />
+        </span>            
+        <span className="in-line">
+          <textarea className="description-input" id="description" name="description" value={newSlideshow.Description} onChange={(e) => setNewSlideshow({ ...newSlideshow, Description: e.target.value })} />
+        </span>
+        <span className="in-line">
+          <label htmlFor="image">Image:</label>
+          <input className="file-input" type="file" id="image" name="image" onChange={(e) => setNewSlideshow({ ...newSlideshow, Image: e.target.files[0] })} />
+        </span>
+        <span className="in-line">
+          <label htmlFor="background">Background:</label>
+          <input className="file-input" type="file" id="background" name="background" onChange={(e) => setNewSlideshow({ ...newSlideshow, Background: e.target.files[0] })} />
+        </span>
+        <button type="submit">Add Announcement</button>
+      </form>
+    </div>
+  );
+  
+}
 
-    if (announcementWithURLs.Image) {
-      const imageKey = await uploadImageAndGenerateURL(announcementWithURLs.Image, `public/announcements/images/${announcementWithURLs.id}.png`);
-      announcementWithURLs.Image = imageKey;
+function EditSlideshow({ slideshow, index, updateSlideshow }) {
+  const [editedSlideshow, setEditedSlideshow] = useState(slideshow[index]);
+  const [uploadedNewImage, setUploadedNewImage] = useState(false);
+  const [uploadedNewBackground, setUploadedNewBackground] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const id = index;
+    let newImageURL = editedSlideshow.Image;
+    let newBackgroundURL = editedSlideshow.Background;
+
+    if (uploadedNewImage) {
+      await uploadImage(editedSlideshow.Image, id);
+      newImageURL = `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/slideshow/images/image-${id}.png`;
     }
 
-    if (announcementWithURLs.Background) {
-      const backgroundKey = await uploadImageAndGenerateURL(announcementWithURLs.Background, `public/announcements/backgrounds/${announcementWithURLs.id}.png`);
-      announcementWithURLs.Background = backgroundKey;
+    if (uploadedNewBackground) {
+      await uploadBackground(editedSlideshow.Background, id);
+      newBackgroundURL = `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/slideshow/backgrounds/background-${id}.png`;
     }
 
-    addAnnouncement(announcementWithURLs);
+    const updatedSlideshow = {
+      ...editedSlideshow,
+      Image: newImageURL,
+      Background: newBackgroundURL,
+    };
+
+    updateSlideshow(updatedSlideshow, index);
   };
 
-  const uploadImageAndGenerateURL = async (file, path) => {
-    try {
-      const result = await uploadData({
-        path: path,
-        data: file
-      }).result;
-      return `https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/${path}`;
-    } catch (error) {
-      console.log('Error uploading file: ', error);
-    }
+  const handleImageChange = (e) => {
+    setEditedSlideshow({ ...editedSlideshow, Image: e.target.files[0] });
+    setUploadedNewImage(true);
+  };
+
+  const handleBackgroundChange = (e) => {
+    setEditedSlideshow({ ...editedSlideshow, Background: e.target.files[0] });
+    setUploadedNewBackground(true);
   };
 
   return (
-    <div className="blur-background">
-      <div className='add-edit-announcement-container'>
-        <span className="add-edit-header">
-          <h3>Add Announcement</h3>
-          <button className="close-edit" onClick={() => addAnnouncement(false)}><IoIosClose /></button>
+    <div className='add-edit-announcement-container'>
+      <h3>Edit Announcement</h3>
+      <form onSubmit={handleSubmit}>
+        <span className="in-line">
+          <label htmlFor="date">Date:</label>
+          <input className="date-input" type="date" id="date" name="date" value={editedSlideshow.Date} onChange={(e) => setEditedSlideshow({ ...editedSlideshow, Date: e.target.value })} />
         </span>
-        <form onSubmit={handleSubmit}>
-          <input className="edit-add-form-title" type="text" id="title" name="title" value={newAnnouncement.Title} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Title: e.target.value })} />
-          <textarea className="edit-add-form-description" id="description" name="description" value={newAnnouncement.Description} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Description: e.target.value })} />
-          <input className="edit-add-form-image" type="file" id="image" name="image" onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Image: e.target.files[0] })} />
-          <input className="edit-add-form-background" type="file" id="background" name="background" onChange={(e) => setNewAnnouncement({ ...newAnnouncement, Background: e.target.files[0] })} />
-          <button type="submit" onClick={() => addAnnouncement(false)}>Add Announcement</button>
-        </form>
-      </div>
+        <span className="in-line">
+          <label htmlFor="title">Title:</label>
+          <input className="title-input" type="text" id="title" name="title" value={editedSlideshow.Title} onChange={(e) => setEditedSlideshow({ ...editedSlideshow, Title: e.target.value })} />
+        </span>
+        <span className="in-line">
+          <textarea className="description-input" id="description" name="description" value={editedSlideshow.Description} onChange={(e) => setEditedSlideshow({ ...editedSlideshow, Description: e.target.value })} />
+        </span>
+        <span className="in-line">
+          <label htmlFor="image">Image:</label>
+          <input className="file-input" type="file" id="image" name="image" onChange={handleImageChange} />
+        </span>
+        <span className="in-line">
+          <label htmlFor="background">Background:</label>
+          <input className="file-input" type="file" id="background" name="background" onChange={handleBackgroundChange} />
+        </span>
+        <button className="submit-button" type="submit">Save</button>
+      </form>
     </div>
   );
 }
 
+
 function Admin(props) {
-  const { signOut, user, announcements: initialAnnouncements } = props;
-  const [announcements, setAnnouncements] = useState(initialAnnouncements);
-  const [addNewAnnouncement, setAddNewAnnouncement] = useState(false);
-  const [editAnnouncement, setEditAnnouncement] = useState(null);
+  const { signOut, user, slideshow: initialSlideshow, currentShows } = props;
+  const [slideshow, setSlideshow] = useState(initialSlideshow);
+  const [addNewSlideshow, setAddNewSlideshow] = useState(false);
+  const [editSlideshow, setEditSlideshow] = useState(null);
+  const [deleteSlideshow, setDeleteSlideshow] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadError, setUploadError] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState(false);
+  const [showBlurredBackground, setShowBlurredBackground] = useState(false);
 
-  const addAnnouncement = (newAnnouncement) => {
-    const updatedAnnouncements = [...announcements, newAnnouncement];
-    setAnnouncements(updatedAnnouncements);
-    uploadAnnouncements(updatedAnnouncements);
-    setAddNewAnnouncement(false);
+
+  const convertToJSON = (slideshow) => {
+    return JSON.stringify(slideshow);
   };
 
-  const updateAnnouncement = (updatedAnnouncement, index) => {
-    const updatedAnnouncements = announcements.map((ann, i) =>
-      i === index ? updatedAnnouncement : ann
-    );
-    setAnnouncements(updatedAnnouncements);
-    uploadAnnouncements(updatedAnnouncements);
-    setEditAnnouncement(null);
-  };
 
-  const convertToJSON = (announcements) => {
-    const jsonAnnouncements = announcements.map((announcement) => {
-      const { id, Date, Title, Description, Image, Background } = announcement;
-      return { id, Date, Title, Description, Image, Background };
-    });
-    return JSON.stringify(jsonAnnouncements);
-  };
-
-  const uploadAnnouncements = async (announcements) => {
+  const uploadSlideshow = async (slideshow) => {
     try {
       await uploadData({
-        path: 'public/announcements/announcements.json',
-        data: convertToJSON(announcements)
+        path: 'public/slideshow/slideshow.json',
+        data: convertToJSON(slideshow)
       }).result;
-      console.log("Uploaded announcements");
+      console.log("Uploaded slideshow");
+      setUploadStatus(true);
+      setUploadSuccess(true);
+      setUploadError(false);
     } catch (error) {
-      console.log('Error uploading announcements: ', error);
+      console.log('Error uploading slideshow: ', error);
+      setUploadStatus(true);
+      setUploadSuccess(false);
+      setUploadError(true);
     }
   };
+
+  const handleDeleteImage = async (index) => {
+    try {
+      await remove({ 
+        path: `public/slideshow/images/image-${index}.png`,
+      });
+    } catch (error) {
+      console.log('Error ', error);
+    }
+  }
+
+
+  const handleDeleteBackground = async (index) => {
+    try {
+      await remove({ 
+        path: `public/slideshow/backgrounds/background-${index}.png`,
+      });
+    } catch (error) {
+      console.log('Error ', error);
+    }
+  }
+
+
+
+  const handleDeleteSlideshow = (index) => {
+    const newSlideshow = slideshow.filter((_, i) => i !== index);
+    handleDeleteImage(index);
+    handleDeleteBackground(index);
+    setSlideshow(newSlideshow);
+    uploadSlideshow(newSlideshow);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUploadStatus(false);
+      setUploadError(false);
+      setUploadSuccess(false);
+    }, 3000);
+  }, [uploadStatus]);
 
   return (
     <div className="page-container">
@@ -175,17 +263,36 @@ function Admin(props) {
           <h2>Hello {user.username}</h2>
           <button className="sign-out-button" onClick={signOut}>Sign out</button>
         </span>
-        <button className="add-announcement-button" onClick={() => setAddNewAnnouncement(!addNewAnnouncement)}>Add Announcement</button>
-        {addNewAnnouncement && (
-          <AddAnnouncement addAnnouncement={addAnnouncement} nextId={announcements.length} />
-        )}
-        {editAnnouncement !== null && (
-          <EditAnnouncement
-            announcement={announcements[editAnnouncement]}
-            index={editAnnouncement}
-            updateAnnouncement={updateAnnouncement}
-          />
-        )}
+        <motion.div
+          className="upload-status"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: uploadStatus ? 1 : 0 }}
+          transition={{ duration: 1 }}
+          >
+          {uploadError && (
+            <span className="upload-status-content">
+             <FaCheckCircle color="red" />
+             <p>Upload Failed</p>
+            </span>
+          )}
+          {uploadSuccess && (
+            <span className="upload-status-content">
+            <FaCheckCircle color="green" />
+            <p>Upload Successful</p>
+            </span>
+          )}
+          </motion.div>
+        {addNewSlideshow && <AddSlideshow length={slideshow.length} addSlideshow={(newSlideshow) => {
+          setSlideshow([...slideshow, newSlideshow]);
+          uploadSlideshow([...slideshow, newSlideshow]);
+          setAddNewSlideshow(false);
+        }} />}
+        {editSlideshow !== null && <EditSlideshow slideshow={slideshow} index={editSlideshow} updateSlideshow={(updatedSlideshow, index) => {
+          setSlideshow(slideshow.map((slideshow, i) => i === index ? updatedSlideshow : slideshow));
+          uploadSlideshow(slideshow.map((slideshow, i) => i === index ? updatedSlideshow : slideshow));
+          setEditSlideshow(null);
+        }} />}
+        <button className="add-slideshow-button" onClick={() => setAddNewSlideshow(!addNewSlideshow)}>Add Slideshow Slide</button>
         <div className="admin-table-container">
           <table className="admin-table">
             <thead>
@@ -196,29 +303,40 @@ function Admin(props) {
                 <th scope="col">Image</th>
                 <th scope="col">Background</th>
                 <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
               </tr>
             </thead>
             <tbody>
-              {announcements.map((announcement, index) => (
+              {slideshow.map((slide, index) => (
                 <tr key={index}>
-                  <td>{handleDateFormatting(new Date(announcement.Date))}</td>
-                  <td>{announcement.Title}</td>
-                  <td>{announcement.Description}</td>
-                  <td><img src={announcement.Image} alt={announcement.Title} /></td>
-                  <td><img src={announcement.Background} alt={announcement.Title} /></td>
+                  <td>{handleDateFormatting(new Date(slide.Date))}</td>
+                  <td>{slide.Title}</td>
+                  <td>{slide.Description}</td>
+                  <td><img src={slide.Image} alt={slide.Title} /></td>
+                  <td><img src={slide.Background} alt={slide.Title} /></td>
                   <td>
                     <button
-                      onClick={() => setEditAnnouncement(index)}
+                      onClick={() => setEditSlideshow(index)}
                     >
                       <MdEdit />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleDeleteSlideshow(index)}
+                    >
+                    <IoCloseCircle color="red" />
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+
         </div>
+
       </div>
+      <CurrentShows currentShows={currentShows} />
     </div>
   );
 }
@@ -226,7 +344,10 @@ function Admin(props) {
 export default function AdminWithAuth(props) {
   return (
     <Authenticator className="sign-in" hideSignUp={true}>
-      {({ signOut, user }) => <Admin announcements={props.announcements} signOut={signOut} user={user} />}
+      {({ signOut, user }) => <Admin currentShows={props.currentShows} slideshow={props.slideshow} signOut={signOut} user={user} />}
     </Authenticator>
   );
 }
+
+
+

@@ -119,8 +119,19 @@ tfoot td {
 
 }
 
+.add-slideshow-button {
+    background: var(--secondary);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
 .add-edit-announcement-container {
     position: fixed;
+    z-index: 10;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -130,80 +141,166 @@ tfoot td {
     align-items: center;
     background: var(--foreground);
     width: 80vw;
-    height: 80vh;
-    padding: 5px;
+    height: fit-content;
+    padding: 0.5rem;
     border-radius: var(--border-radius);
 }
 
-.add-edit-header {
+.add-edit-announcement-container form {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    gap: 10px;
     width: 100%;
-    padding-bottom: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+    height: 100%;
 }
 
-.add-edit-header button {
+.blur-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+
+}
+
+.submit-button {
     background: var(--secondary);
     color: var(--foreground);
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
     padding: 0.5rem 1rem;
     cursor: pointer;
+    width: 50%;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.add-edit-header h3 {
-    margin: 0;
-    color: var(--text);
-}
 
-.edit-add-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 5px;
+.add-edit-announcement-container form textarea {
+    resize: none;
     width: 100%;
-    padding: 1rem;
-    padding-top: 5px;
-}
-
-.edit-add-form input {
+    height: 175px;
     padding: 0.5rem;
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
 }
 
-.edit-add-form-title {
-    width: 100%;
+.in-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
 }
 
-.edit-add-form-description {
-    padding: 0.375rem;
-    width: 100%;
-    height: 175px;
-    margin-top: 5px;
-    resize: none;
+.date-input {
+    min-width: fit-content;
+    width: 25%;
+    padding: 0.5rem;
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
 }
 
-.edit-add-form-image {
-    width: 50%;
+.title-input {
+    width: 75%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
 }
 
-.edit-add-form-background {
-    width: 50%;
+.file-input {
+    width: 75%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
 }
 
-.edit-add-form button {
-    margin-top: 15px;
+
+
+.upload-status {
+    position: fixed;
+    bottom: 10px;
+    width: fit-content;   
+    padding: 0; 
+    z-index: 10;
+}
+
+.upload-status-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    background: var(--foreground);
+    color: var(--text);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-status-content p {
+    margin: 0;
+}
+
+.current-show {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 90vw;
+    margin-top: 20px;
+}
+
+.current-show img {
+    width: 50px;
+    height: auto;
+}
+
+.admin-edit-show-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.admin-edit-show {
+    position: fixed;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--foreground);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 90vw;
+    height: fit-content;
+    padding: 1rem;
+    margin-top: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+
+}
+
+.close-button {
     background: var(--secondary);
     color: var(--foreground);
-    border: 1px solid var(--border);
+    border: none;
     border-radius: var(--border-radius);
     padding: 0.5rem 1rem;
     cursor: pointer;
+    width: fit-content;
+    margin: 25px;
 }
+
