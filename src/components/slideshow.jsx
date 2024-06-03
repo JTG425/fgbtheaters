@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import anime from 'animejs';
 import { motion } from 'framer-motion';
+import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
 import '../componentstyles/slideshow.css'; // Import CSS for additional styles
 
 const SlideShow = (props) => {
@@ -23,7 +25,7 @@ const SlideShow = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((currentImageIndex + 1) % slideshow.length);
-    }, 20000);
+    }, 7000);
     return () => clearInterval(interval);
   }, [currentImageIndex]);
 
@@ -70,7 +72,24 @@ const SlideShow = (props) => {
               </div>
               </div>
               </div>
+              <div key={`slideshow-buttons-${index}`} className='slideshow-buttons'>
+              <button
+                  key={`slideshow-button-${index}`}
+                  className='slideshow-button'
+                  onClick={() => setCurrentImageIndex((currentImageIndex + 1) % slideshow.length)}
+                >
+                  <FaChevronLeft />
+                </button>
+                <button
+                  key={`slideshow-button-${index}`}
+                  className='slideshow-button'
+                  onClick={() => setCurrentImageIndex((currentImageIndex + 1) % slideshow.length)}
+                >
+                  <FaChevronRight />
+                </button>
+              </div>
           </motion.div>
+
         ))}
     </div>
   );

@@ -9,16 +9,57 @@ function Tickets() {
   const handleCheckbox = (e) => {
     setConfirmed(e.target.checked);
   };
+
+
+  const buttonVariants = {
+    hovered: {
+      background: "#940303",
+      color: "#fbfbfb",
+      boxShadow: "0px 0px 10px 0px rgba(148, 3, 3, 0.75)",
+    },
+    nothovered: {
+      background: "#fbfbfb",
+      color: "#940303",
+      boxShadow: "0px 0px 0px 0px rgba(148, 3, 3, 0)",
+    },
+  }
+
+
+
   return (
     <div className="page-container">
       <motion.div className="tickets">
       <h2>Buy Tickets Online</h2>
       <div className="prices">
-        <h3>Prices</h3>
-
+        <table>
+          <thead>
+          <tr>
+            <th>Show</th>
+            <th>Adult</th>
+            <th>Child</th>
+            <th>Senior</th>
+            <th>Military</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Standard</td>
+            <td>$12.84</td>
+            <td>$9.63</td>
+            <td>$9.37</td>
+            <td>$9.37</td>
+          </tr>
+          <tr>
+            <td>Matinee</td>
+            <td>$9.37</td>
+            <td>$9.37</td>
+            <td>$9.37</td>
+            <td>$9.37</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
         <div className="tickets-terms">
-
         <h3>Print At Home</h3>
         <p>
           When you purchase your tickets online, a confirmation email will be
@@ -91,11 +132,13 @@ function Tickets() {
           >
             <motion.button
               className="buy-button"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              disabled={confirmed === false}
-            >
-              Buy Tickets
+                            initial="nothovered"
+                            whileHover="hovered"
+                            whileTap={{ scale: 0.98 }}
+                            variants={buttonVariants}
+                            disabled={confirmed === false}
+                          >
+                            Buy Tickets
             </motion.button>
           </a>
         </motion.div>

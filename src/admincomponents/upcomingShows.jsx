@@ -24,8 +24,8 @@ const handleDisplayDate = (date) => {
 
 
 
-function CurrentShows(props) {
-    const shows = props.currentShows
+function UpcomingShows(props) {
+    const shows = props.upcomingShows
     const addToSlideshow = props.addToSlideshow
     const [showEdit, setShowEdit] = useState(false)
     const [showIndex, setShowIndex] = useState(0)
@@ -53,7 +53,7 @@ function CurrentShows(props) {
 
     return (
         <div className="admin-table-container">
-            <h2>Current Shows</h2>
+            <h2>Upcoming Shows</h2>
           <table className="admin-table">
             <thead>
               <tr>
@@ -96,4 +96,4 @@ function CurrentShows(props) {
     );
 }
 
-export default CurrentShows;
+export default UpcomingShows;

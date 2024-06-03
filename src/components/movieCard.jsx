@@ -30,6 +30,7 @@ function MovieCard(props) {
   const [shows, setShows] = useState(capShows);
   const selectedTheater = props.selectedTheater;
   const [isAnyMovies, setIsAnyMovies] = useState(true);
+  const [inView, setInView] = useState(false);
 
 
 
@@ -66,7 +67,10 @@ function MovieCard(props) {
           shows
             .filter((film) => film.show.some((show) => show.date === date))
             .map((film, filmIndex) => (
-              <motion.div className="film" key={filmIndex}>
+              <motion.div 
+                className="film" 
+                key={filmIndex}
+                >
                 <motion.img
                   className="poster"
                   src={film.poster}

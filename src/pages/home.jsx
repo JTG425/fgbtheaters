@@ -32,6 +32,13 @@ const handleUpcomingDate = (date) => {
 
 };
 
+const handleUpcomingDateFormatting = (date) => {
+  const year = date.slice(0, 4);
+  const month = date.slice(4, 6);
+  const day = date.slice(6, 8);
+  return `${month}${day}${year}`;
+}
+
 function Home(props) {
   const capShows = props.capShows;
   const parShows = props.parShows;
@@ -119,14 +126,21 @@ function Home(props) {
       <h2>Upcoming Shows</h2>
       <div className="upcoming-shows">
             {upcoming.map((show, index) => (
-              <div key={`upcoming-cap-show-${index}`} className="upcoming-show">
+              <motion.div 
+                key={`upcoming-cap-show-${index}`} 
+                className="upcoming-show" 
+                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => setDate(handleUpcomingDateFormatting(show.StartDate))}
+                
+                >
                 <a href={show.website} target="_blank">
                   <h4>{show.name}</h4>
                 </a>
                 <p>{show.rating}</p>
                 <img src={show.poster} />
                 <p>{handleUpcomingDate(show.StartDate)}</p>
-              </div>
+              </motion.div>
             ))}
             </div>
     </div>

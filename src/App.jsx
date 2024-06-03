@@ -129,7 +129,7 @@ function App(props) {
                 path="/admin"
                 element={
                   <PageWrapper>
-                    <Admin slideshow={slideshow} currentShows={currentShows} />
+                    <Admin slideshow={slideshow} currentShows={currentShows} upcomingShows={upcomingShows} />
                   </PageWrapper>
                 }
               />

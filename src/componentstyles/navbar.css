@@ -11,7 +11,7 @@
     width: 100vw;
     position: fixed;
     top: 0;
-    z-index: 2;
+    z-index: 5;
 }
 
 .nav-content-container {
@@ -35,10 +35,9 @@
 
 .nav-button {
     position: relative;
-    background: transparent;
-    width: 85px;
-    color: var(--copy);
-    padding: 0;
+    background: #fbfbfb;
+    width: 90px;
+    padding: 0.5rem 1rem;
     border: none;
     outline: none;
     border-radius: var(--border-radius);
@@ -51,9 +50,8 @@
 
 
 .nav-button p {
-    margin: 0.5rem 1rem;
+    margin: 0;
     text-decoration: none;
-    color: var(--copy);
     font-size: 0.75rem;
     font-weight: bold;
 }

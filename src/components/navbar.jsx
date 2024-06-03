@@ -19,7 +19,6 @@ function NavBar(props) {
       background: "#fbfbfb",
     },
     hovered: {
-      background: "#940303",
       boxShadow: "0px 0px 10px 0px rgba(148, 3, 3, 0.75)",
     },
   };
@@ -34,7 +33,7 @@ function NavBar(props) {
       fontWeight: "400",
     },
     hovered: {
-      color: "#fbfbfb",
+      fontWeight: "700",
     },
   };
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from "framer-motion";
 import '../pagestyles/rentalsandgifts.css'
 
-function Gift(props) {
+function GiftCards(props) {
     const buttonVariants = {
         hovered: {
             background: "#940303",
@@ -16,8 +16,7 @@ function Gift(props) {
         },
     }
     return (
-        <div className='rentals-and-gifts-container'>
-            <h2>Gift Cards</h2>
+        <>
             <div className='gift-card'>
                 <img
                     src="https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/gifts/MovieCard.png"
@@ -51,8 +50,21 @@ function Gift(props) {
                     </span>
                 </span>
             </div>
-        </div>
+            <div className='gift-card'>
+                <img
+                    src="https://fgbtheatersstoragef2bb9-dev.s3.amazonaws.com/public/gifts/VIPcard.png"
+                    alt="gift card"
+                />
+                <span className='gift-card-text'>
+                    <span className='card-header'>
+                        <h4>Movie Pass</h4>
+                    </span>
+
+                    <p>Our VIP Pass can be purchased at the box office in Barre at the Paramount, in Montpelier at the Capitol Theater, or place an order by phone during business hours to receive a card by mail - 802-223-4778. VIP Pass is good for one individual movie ticket.</p>
+                </span>
+            </div>
+        </>
     )
 }
 
-export default Gift;
+export default GiftCards;

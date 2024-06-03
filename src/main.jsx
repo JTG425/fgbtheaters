@@ -44,6 +44,7 @@ const start = async () => {
     upcoming_json = await fetchUpShows();
     current_json = await fetchCurrShows();
     if (capRecieved && parRecieved && slideRecieved && upcomingRecieved && currentRecieved) {
+      console.log('Data Recieved No Wait');
       capShows = JSON.parse(cap_json);
       parShows = JSON.parse(par_json);
       slideshow = JSON.parse(slideshow_json);
@@ -51,6 +52,7 @@ const start = async () => {
       upcomingShows = JSON.parse(upcoming_json);
       root();
     } else {
+      console.log('waiting');
       wait();
     }
   };
@@ -116,8 +118,8 @@ const start = async () => {
   const fetchCurrShows = async () => {
     try {
       const getCurrShows = await downloadData({
-        path: 'public/schedule/FGB_Current_Movies.json',
-        CacheControl: "no-cache"
+        path: 'public/schedule/Current.json',
+        CacheControl: "must-revalidate"
       }).result;
       const json = await (getCurrShows.body).text();
       currentRecieved = true;

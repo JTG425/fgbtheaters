@@ -12,6 +12,8 @@
     background-color: var(--foreground);
     box-shadow: var(--box-shadow);
     cursor: pointer;
+    color: var(--copy);
+    font-weight: 700;
 }
 
 .date-icon {
@@ -81,7 +83,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: fit-content;
+    max-width: 1000px;
     height: fit-content;
     padding: 1rem 0;
     outline: var(--border);
@@ -97,6 +100,7 @@
     height: fit-content;
     padding: 1rem 0;
     border-bottom: var(--border);
+    cursor: pointer;
 
 }
 .upcoming-show h4 {
@@ -119,4 +123,25 @@
     margin: 0;
     font-size: 12px;
     text-align: center;
+}
+
+@media screen and (max-width: 650px) {
+    .upcoming-shows {
+        gap: 50px;
+        flex-wrap: wrap;
+
+    }
+
+    .upcoming-show img {
+        width: 100px;
+    }
+
+    .upcoming-show p {
+        font-size: 8px;
+    }
+
+    .upcoming-show h4 {
+        font-size: 8px;
+    }
+    
 }

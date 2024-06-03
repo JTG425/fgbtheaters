@@ -7,7 +7,6 @@ import Rentals from './rentals'
 function RentalsAndGifts(props) {
     return (
         <div className='page-container'>
-            <h2>Gift Cards and Rentals</h2>
             <Gift />
             <Rentals />
         </div>

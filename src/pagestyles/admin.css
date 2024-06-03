@@ -1,45 +1,153 @@
-thead,
-tfoot {
-    background-color: var(--foreground);
+table {
+    width: 90vw;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+table thead {
+    background: var(--foreground);
     color: var(--text);
 }
 
-table {
-    border-collapse: collapse;
-    border: 1px solid var(table);
-    background: var(--foreground);
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    border-radius: var(--border-radius);
-}
-
-th,
-td {
+table thead th {
+    padding: 0.5rem;
     border: 1px solid var(--border);
-    padding: 8px 10px;
+}
+table tbody {
+    background: var(--foreground);
+    color: var(--text);
 }
 
-td img {
-    width: 50px;
-    height: auto;
-    object-fit: cover;
-}
-
-td:last-of-type {
+table tbody td {
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    width: fit-content;
     text-align: center;
 }
 
-tbody>tr:nth-of-type(even) {
-    background-color: var(--foreground);
+table tbody td:nth-child(1) {
+    font-size: 12px;
 }
 
-tfoot th {
-    text-align: right;
+table tbody td:nth-child(2) {
+    font-size: 12px;
 }
 
-tfoot td {
-    font-weight: bold;
+table tbody td:nth-child(3) {
+    font-size: 12px;
 }
+
+table tbody td:nth-child(5) {
+    padding: 0;
+    width: 20px;
+}
+
+table tbody td img {
+    width: 50px;
+    height: auto;
+}
+
+
+
+table tbody td button {
+    background: var(--secondary);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    margin: 0 auto;
+    font-size: 16px;
+
+}
+
+  
+.admin-table table tbody td button {
+    background: var(--secondary);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.admin-table-container {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+}
+
+.admin-table-header {
+    display: flex;
+    width: 90vw;
+    max-width: 1000px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 0;
+    padding: 0;
+    background: var(--foreground);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table-header div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    width: 125px;
+    height: 20px;
+    padding: 1rem;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-table-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+    max-width: 1000px;
+    margin-bottom: 5px;
+    padding: 0;
+    background: var(--foreground);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    font-size: 12px;
+    
+}
+
+.admin-table-row div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+}
+
+
+.admin-table-row img {
+    width: 50px;
+    height: auto;
+}
+
+
 
 
 .admin-console {
@@ -303,4 +411,5 @@ tfoot td {
     width: fit-content;
     margin: 25px;
 }
+
 
