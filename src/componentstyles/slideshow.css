@@ -94,8 +94,11 @@
     padding: 0.75rem;
     align-items: center;
 }
+
 .slideshow-buttons {
     position: absolute;
+    z-index: 4;
+    top: 200px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -120,6 +123,10 @@
 
 
 @media screen and (max-width: 600px){
+
+    .slideshow-buttons {
+        top: 250px;
+    }
     .slideshow-content {
         flex-direction: column;
     }

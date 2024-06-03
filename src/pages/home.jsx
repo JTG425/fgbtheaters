@@ -93,14 +93,15 @@ function Home(props) {
             {showDatePicker && (
               <div className="date-picker-container">
               <div className="blur-date-background" onClick={() => setShowDatePicker(false)} />
+              <div className="date-picker">
               <DayPicker
                 showOutsideDays={true}
                 fixedWeeks={true}
-                className="date-picker"
                 mode="single"
                 selected={selectedDate}
                 onSelect={(date) => handleDateChange(date)}
               />
+              </div>
               </div>
             )}
         </div>

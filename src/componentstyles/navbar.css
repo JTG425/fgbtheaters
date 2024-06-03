@@ -3,7 +3,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background: var(--foreground);
     padding: 0.5rem 1rem;
     border: none;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -12,6 +11,9 @@
     position: fixed;
     top: 0;
     z-index: 5;
+    background: rgba(251, 251, 251, 0.75);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .nav-content-container {

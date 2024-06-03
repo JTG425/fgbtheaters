@@ -1,4 +1,5 @@
 import "./App.css";
+import "react-day-picker/dist/style.css";
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -80,6 +81,21 @@ function App(props) {
               <Route
                 key="home"
                 path="/"
+                element={
+                  <PageWrapper>
+                    <Home
+                      capShows={capitolShows}
+                      parShows={paramountShows}
+                      upcomingShows={upcomingShows}
+                      slideshow={slideshow}
+                      dataReceived={dataReceived}
+                    />
+                  </PageWrapper>
+                }
+              />
+              <Route
+                key="home"
+                path="/home"
                 element={
                   <PageWrapper>
                     <Home
